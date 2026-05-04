@@ -342,6 +342,16 @@
         <label class="fl">Notes <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
         <input id="iNotes" class="fi" type="text" placeholder="Add a note..." maxlength="80" autocomplete="off">
       </div>
+      <div class="fg">
+        <label class="fl">Card</label>
+        <select id="iCard" class="fi">
+          <option value="">— Not specified —</option>
+          <option value="Chase">Chase</option>
+          <option value="BOFA">Bank of America</option>
+          <option value="Cash">Cash</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
       <div class="fbts">
         <button class="bcancel" onclick="closeForm()">Cancel</button>
         <button class="bsave" onclick="saveExp()">Save</button>
@@ -454,6 +464,13 @@ function getWeekCap(w) {
 }
 
 let editingWeek = null;
+
+const CARD_COLORS = {
+  'Chase': { color: '#1e40af', bg: '#dbeafe' },
+  'BOFA':  { color: '#dc2626', bg: '#fee2e2' },
+  'Cash':  { color: '#059669', bg: '#d1fae5' },
+  'Other': { color: '#475569', bg: '#f1f5f9' },
+};
 
 function setSplit(mode) {
   localStorage.setItem(splitModeKey(), mode);
@@ -828,10 +845,13 @@ function renderTxs() {
       <div class="txs">` +
       items.map(e => {
         const cat = getCat(e.category);
+        const cc  = e.card ? (CARD_COLORS[e.card] || CARD_COLORS['Other']) : null;
+        const cardBadge = cc ? `<span class="cat-badge" style="background:${cc.bg};color:${cc.color}">💳 ${e.card}</span>` : '';
         return `<div class="tx">
           <div class="txinfo">
             <div class="txdesc">
               <span class="cat-badge" style="background:${cat.bg};color:${cat.color}">${e.category}</span>
+              ${cardBadge}
               <span class="txdesc-text">${e.desc}</span>
             </div>
             ${e.notes ? `<div class="txnotes">${e.notes}</div>` : ''}
@@ -872,6 +892,7 @@ function toggleForm() {
   document.getElementById('iDate').value      = todayStr();
   document.getElementById('iDate').max        = todayStr();
   document.getElementById('iNotes').value     = '';
+  document.getElementById('iCard').value      = '';
   renderCategoryPills(); clearErrs();
   fc.style.display = 'block';
   setTimeout(() => document.getElementById('iDesc').focus(), 80);
@@ -893,6 +914,7 @@ async function saveExp() {
   const amt      = parseFloat(document.getElementById('iAmt').value);
   const date     = document.getElementById('iDate').value;
   const notes    = document.getElementById('iNotes').value.trim();
+  const card     = document.getElementById('iCard').value;
   const category = selectedCategory;
   if (!desc)                { setErr('iDesc','eDesc','Required'); ok=false; }
   if (!amt||amt<=0)         { setErr('iAmt','eAmt','Enter amount'); ok=false; }
@@ -903,15 +925,15 @@ async function saveExp() {
   closeForm();
   if (currentEditId) {
     const i = exps.findIndex(e=>e.id===currentEditId);
-    if (i !== -1) exps[i] = { ...exps[i], desc, amount: amt, date, category, notes };
+    if (i !== -1) exps[i] = { ...exps[i], desc, amount: amt, date, category, notes, card };
     render();
-    await apiAction({ action:'update', id:currentEditId, desc, amount:amt, date, category, notes });
+    await apiAction({ action:'update', id:currentEditId, desc, amount:amt, date, category, notes, card });
     toast('Expense updated');
   } else {
     const id = Date.now().toString();
-    exps.push({ id, desc, amount: amt, date, category, notes });
+    exps.push({ id, desc, amount: amt, date, category, notes, card });
     render();
-    await apiAction({ action:'add', id, desc, amount:amt, date, category, notes });
+    await apiAction({ action:'add', id, desc, amount:amt, date, category, notes, card });
     toast('Expense saved');
   }
 }
@@ -926,6 +948,7 @@ function startEdit(id) {
   document.getElementById('iDate').value      = e.date;
   document.getElementById('iDate').max        = todayStr();
   document.getElementById('iNotes').value     = e.notes || '';
+  document.getElementById('iCard').value      = e.card || '';
   renderCategoryPills(); clearErrs();
   const fc = document.getElementById('fcard');
   fc.style.display = 'block';
