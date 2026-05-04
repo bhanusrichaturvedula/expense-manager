@@ -19,97 +19,52 @@
       --red: #ef4444;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      max-width: 430px;
-      margin: 0 auto;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; max-width: 430px; margin: 0 auto; }
 
-    /* ── Login Screen ── */
-    #loginScreen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%);
-      padding: 24px;
-    }
-    .login-card {
-      background: white;
-      border-radius: 24px;
-      padding: 40px 28px;
-      text-align: center;
-      width: 100%;
-      max-width: 320px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-    }
+    /* ── Login ── */
+    #loginScreen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%); padding: 24px; }
+    .login-card { background: white; border-radius: 24px; padding: 40px 28px; text-align: center; width: 100%; max-width: 320px; box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
     .login-icon { font-size: 52px; margin-bottom: 14px; }
     .login-title { font-size: 24px; font-weight: 800; color: #075985; margin-bottom: 8px; }
     .login-sub { font-size: 13px; color: #64748b; margin-bottom: 32px; line-height: 1.6; }
     .login-btn-wrap { display: flex; justify-content: center; }
 
-    /* ── Setup / Settings Screen ── */
-    #setupScreen {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%);
-      padding: 20px;
-      z-index: 200;
-      overflow-y: auto;
-    }
-    .setup-card {
-      background: white;
-      border-radius: 24px;
-      padding: 30px 24px;
-      width: 100%;
-      max-width: 360px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-    }
+    /* ── Setup / Settings ── */
+    #setupScreen { position: fixed; inset: 0; display: flex; align-items: flex-start; justify-content: center; background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%); padding: 20px; z-index: 200; overflow-y: auto; }
+    .setup-card { background: white; border-radius: 24px; padding: 30px 24px; width: 100%; max-width: 360px; box-shadow: 0 12px 40px rgba(0,0,0,0.2); margin: auto; }
     .setup-icon { font-size: 40px; text-align: center; margin-bottom: 10px; }
     .setup-title { font-size: 20px; font-weight: 800; color: #075985; text-align: center; margin-bottom: 4px; }
     .setup-sub { font-size: 13px; color: #64748b; text-align: center; margin-bottom: 24px; line-height: 1.5; }
     .setup-label { display: block; font-size: 10px; font-weight: 700; color: var(--b2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .setup-input {
-      width: 100%; padding: 11px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px; font-size: 16px;
-      color: var(--text); background: var(--bg);
-      outline: none; margin-bottom: 20px;
-    }
+    .setup-input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 16px; color: var(--text); background: var(--bg); outline: none; margin-bottom: 20px; }
     .setup-input:focus { border-color: var(--b3); background: white; }
     .setup-input.err { border-color: var(--red); }
     .setup-pills { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 20px; }
-    .setup-pill {
-      padding: 7px 14px; border-radius: 100px;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      border: 1.5px solid #e2e8f0; background: #f8fafc;
-      color: var(--muted); transition: all 0.15s; white-space: nowrap;
-    }
+    .setup-pill { padding: 7px 14px; border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: var(--muted); transition: all 0.15s; white-space: nowrap; }
     .setup-pill.active { background: #dbeafe; border-color: var(--b2); color: var(--b1); }
-    .setup-start {
-      width: 100%; padding: 14px;
-      background: linear-gradient(135deg, var(--b1), var(--b3));
-      color: white; border: none; border-radius: 12px;
-      font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px;
-    }
-    .setup-cancel {
-      width: 100%; padding: 12px; background: #f1f5f9;
-      color: var(--muted); border: none; border-radius: 12px;
-      font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px;
-    }
+    .setup-start { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--b1), var(--b3)); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px; }
+    .setup-cancel { width: 100%; padding: 12px; background: #f1f5f9; color: var(--muted); border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+
+    /* ── Category Manager (in settings) ── */
+    .cat-mgr { margin-bottom: 6px; }
+    .cat-mgr-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+    .cat-mgr-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+    .cat-mgr-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
+    .cat-mgr-del { background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 15px; padding: 3px 6px; border-radius: 5px; }
+    .cat-mgr-del:active { background: #fee2e2; color: var(--red); }
+    .cat-add-btn { width: 100%; padding: 9px; background: none; border: 1.5px dashed var(--border); border-radius: 8px; color: var(--b2); font-size: 13px; font-weight: 600; cursor: pointer; margin: 8px 0 20px; }
+    .cat-add-form { background: #f8fafc; border-radius: 10px; padding: 12px; margin: 8px 0 20px; }
+    .cat-add-input { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: white; outline: none; margin-bottom: 10px; }
+    .cat-add-input:focus { border-color: var(--b3); }
+    .color-swatches { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
+    .color-swatch { width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; }
+    .color-swatch.active { border-color: #1e293b; transform: scale(1.2); }
+    .cat-add-btns { display: flex; gap: 6px; }
+    .cat-add-save { flex: 1; padding: 8px; background: var(--b2); color: white; border: none; border-radius: 7px; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .cat-add-cancel-btn { padding: 8px 12px; background: #f1f5f9; color: var(--muted); border: none; border-radius: 7px; font-size: 13px; cursor: pointer; }
 
     /* ── Header ── */
-    .hdr {
-      background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%);
-      padding: 22px 16px 18px;
-      color: white;
-    }
+    .hdr { background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%); padding: 22px 16px 18px; color: white; }
     .hdr-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
     .hdr-title { font-size: 18px; font-weight: 800; }
     .hdr-right { text-align: right; }
@@ -123,15 +78,13 @@
     .bval { font-size: 18px; font-weight: 800; margin-top: 3px; }
     .bitem.editable { cursor: pointer; }
     .bitem.editable .blabel::after { content: ' ✏️'; font-size: 9px; }
-    .congrats-banner {
-      margin: 10px 12px 0;
-      background: linear-gradient(135deg, #059669, #10b981);
-      border-radius: 14px; padding: 14px 16px;
-      display: flex; align-items: center; gap: 12px;
-      box-shadow: 0 4px 14px rgba(16,185,129,0.35);
-      cursor: pointer;
-      animation: popIn 0.4s cubic-bezier(.175,.885,.32,1.275);
-    }
+    .bval.neg { color: #fca5a5; }
+    .bdiv { background: rgba(255,255,255,0.3); height: 36px; }
+    .ptrack { background: rgba(255,255,255,0.22); border-radius: 100px; height: 5px; overflow: hidden; }
+    .pfill { height: 100%; border-radius: 100px; background: white; transition: width 0.5s ease; }
+    .pfill.warn { background: #fcd34d; }
+    .pfill.over { background: #f87171; }
+    .congrats-banner { margin: 10px 12px 0; background: linear-gradient(135deg, #059669, #10b981); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 14px rgba(16,185,129,0.35); cursor: pointer; animation: popIn 0.4s cubic-bezier(.175,.885,.32,1.275); }
     @keyframes popIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .congrats-icon { font-size: 28px; flex-shrink: 0; }
     .congrats-text { flex: 1; }
@@ -143,18 +96,19 @@
     .budget-input:focus { border-color: var(--b3); background: white; }
     .budget-save { padding: 10px 16px; background: var(--b2); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
     .budget-cancel { padding: 10px 12px; background: #f1f5f9; color: var(--muted); border: none; border-radius: 8px; font-size: 14px; cursor: pointer; }
-    .bval.neg { color: #fca5a5; }
-    .bdiv { background: rgba(255,255,255,0.3); height: 36px; }
-    .ptrack { background: rgba(255,255,255,0.22); border-radius: 100px; height: 5px; overflow: hidden; }
-    .pfill { height: 100%; border-radius: 100px; background: white; transition: width 0.5s ease; }
-    .pfill.warn { background: #fcd34d; }
-    .pfill.over { background: #f87171; }
 
     /* ── Weeks ── */
     .weeks { padding: 14px 12px 2px; }
+    .split-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .split-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .split-toggle { display: flex; background: #f1f5f9; border-radius: 100px; padding: 2px; gap: 2px; }
+    .stbtn { padding: 4px 12px; border: none; border-radius: 100px; font-size: 11px; font-weight: 600; cursor: pointer; background: none; color: var(--muted); transition: all 0.15s; }
+    .stbtn.active { background: var(--b2); color: white; }
     .wgrid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
     .wcard { background: var(--card); border-radius: 14px; padding: 10px 4px 9px; text-align: center; border: 2px solid var(--border); }
     .wcard.cur { background: var(--b2); border-color: var(--b1); box-shadow: 0 4px 14px rgba(14,165,233,0.35); }
+    .wcard.custom-mode { cursor: pointer; }
+    .wcard.custom-mode:active { opacity: 0.85; }
     .wlabel { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 7px; }
     .wcard.cur .wlabel { color: rgba(255,255,255,0.75); }
     .ring { position: relative; width: 52px; height: 52px; margin: 0 auto 7px; }
@@ -175,15 +129,21 @@
     .wcard.cur .wbal.neg { color: #fca5a5; }
     .wsub { font-size: 9px; color: var(--muted); margin-top: 1px; }
     .wcard.cur .wsub { color: rgba(255,255,255,0.6); }
+    .wedit { font-size: 9px; color: var(--muted); margin-top: 3px; opacity: 0.7; }
+    .wcard.cur .wedit { color: rgba(255,255,255,0.6); }
+
+    /* ── Week Budget Modal ── */
+    .wbmodal { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 300; padding: 20px; }
+    .wbcard { background: white; border-radius: 18px; padding: 22px 20px; width: 100%; max-width: 280px; box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+    .wbhd { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+    .wbbtns { display: flex; gap: 8px; margin-top: 14px; }
+    .wbsave { flex: 1; padding: 11px; background: var(--b2); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .wbcancel { padding: 11px 14px; background: #f1f5f9; color: var(--muted); border: none; border-radius: 8px; font-size: 14px; cursor: pointer; }
+    .wbreset { width: 100%; padding: 8px; background: none; color: #94a3b8; border: none; font-size: 12px; cursor: pointer; margin-top: 6px; text-decoration: underline; }
 
     /* ── Content ── */
     .body { padding: 12px 12px 90px; }
-    .add-btn {
-      width: 100%; padding: 13px;
-      background: linear-gradient(135deg, var(--b1), var(--b3));
-      color: white; border: none; border-radius: 12px;
-      font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 10px;
-    }
+    .add-btn { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--b1), var(--b3)); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 10px; }
 
     /* ── Search ── */
     .search-wrap { position: relative; margin-bottom: 12px; }
@@ -204,13 +164,9 @@
     .fbts { display: flex; gap: 8px; margin-top: 14px; }
     .bsave { flex: 1; padding: 12px; background: var(--b2); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
     .bcancel { padding: 12px 16px; background: #f1f5f9; color: var(--muted); border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
-
-    /* ── Category pills (form) ── */
     .cat-wrap { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
     .cat-wrap::-webkit-scrollbar { display: none; }
     .cat-pill { flex-shrink: 0; padding: 6px 13px; border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: var(--muted); transition: all 0.15s; white-space: nowrap; }
-
-    /* ── Category badge (transaction) ── */
     .cat-badge { flex-shrink: 0; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 100px; white-space: nowrap; }
 
     /* ── Transactions ── */
@@ -241,17 +197,11 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .empty { text-align: center; padding: 36px 16px; color: #94a3b8; }
     .eicon { font-size: 40px; margin-bottom: 10px; }
-
-    /* ── Toast ── */
     .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0369a1; color: white; padding: 10px 18px; border-radius: 100px; font-size: 13px; font-weight: 600; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; z-index: 999; }
     .toast.show { opacity: 1; }
-
-    /* ── Undo Toast ── */
     .undo-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 10px 10px 18px; border-radius: 100px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 10px; opacity: 0; transition: opacity 0.3s; pointer-events: none; white-space: nowrap; z-index: 998; }
     .undo-toast.show { opacity: 1; pointer-events: auto; }
     .undo-btn { background: var(--b3); color: white; border: none; border-radius: 100px; padding: 4px 12px; font-size: 12px; font-weight: 700; cursor: pointer; }
-
-    /* ── Saving overlay ── */
     .saving-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; z-index: 100; }
     .saving-box { background: white; border-radius: 14px; padding: 20px 28px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
     .saving-box .spinner { margin-bottom: 10px; }
@@ -260,7 +210,7 @@
 </head>
 <body>
 
-<!-- ── Login Screen ── -->
+<!-- ── Login ── -->
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-icon">💰</div>
@@ -270,7 +220,7 @@
   </div>
 </div>
 
-<!-- ── Setup / Settings Screen ── -->
+<!-- ── Setup / Settings ── -->
 <div id="setupScreen" style="display:none">
   <div class="setup-card">
     <div class="setup-icon">⚙️</div>
@@ -285,6 +235,10 @@
 
     <label class="setup-label">Week Starts On</label>
     <div class="setup-pills" id="weekStartPills"></div>
+
+    <label class="setup-label">Your Categories</label>
+    <div class="cat-mgr" id="catMgr"></div>
+    <div id="catAddArea"></div>
 
     <button class="setup-start" id="setupStartBtn" onclick="saveSetup()">Get Started →</button>
     <button class="setup-cancel" id="setupCancelBtn" style="display:none" onclick="closeSetup()">Cancel</button>
@@ -345,17 +299,22 @@
   </div>
 
   <div class="weeks">
+    <div class="split-row">
+      <span class="split-label">Weekly split</span>
+      <div class="split-toggle">
+        <button class="stbtn active" id="stEqual" onclick="setSplit('equal')">Equal</button>
+        <button class="stbtn" id="stCustom" onclick="setSplit('custom')">Custom</button>
+      </div>
+    </div>
     <div class="wgrid" id="wgrid"></div>
   </div>
 
   <div class="body">
     <button class="add-btn" onclick="toggleForm()">+ Add Expense</button>
-
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input id="searchInput" class="search-fi" type="text" placeholder="Search expenses..." oninput="renderTxs()">
     </div>
-
     <div class="fcard" id="fcard" style="display:none">
       <div class="fhd" id="fhd">New Expense</div>
       <div class="fg">
@@ -388,11 +347,21 @@
         <button class="bsave" onclick="saveExp()">Save</button>
       </div>
     </div>
-
     <div class="stitle">Transactions</div>
-    <div id="txArea">
-      <div class="loading"><div class="spinner"></div>Loading...</div>
+    <div id="txArea"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+  </div>
+</div>
+
+<!-- ── Week Budget Modal ── -->
+<div class="wbmodal" id="weekBudgetModal" style="display:none">
+  <div class="wbcard">
+    <div class="wbhd" id="wbTitle">Week 1 Budget</div>
+    <input id="iWkBudget" class="fi" type="number" placeholder="Enter budget" min="0.01" step="0.01" inputmode="decimal">
+    <div class="wbbtns">
+      <button class="wbcancel" onclick="closeWeekBudget()">Cancel</button>
+      <button class="wbsave" onclick="saveWeekBudget()">Set</button>
     </div>
+    <button class="wbreset" onclick="resetWeekBudget()">Reset to equal split</button>
   </div>
 </div>
 
@@ -403,11 +372,17 @@
 </div>
 
 <script>
-const CLIENT_ID = '941564315246-inm05c2lv8ohggc3pa0nt7838vkd1d1i.apps.googleusercontent.com';
+const CLIENT_ID  = '941564315246-inm05c2lv8ohggc3pa0nt7838vkd1d1i.apps.googleusercontent.com';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyTf5AVEXuViksmXbsgP03b5qqG48hDJ2oxJlxx_GFF68VBXVq-ghAhfCZ9Nm9foH-35Q/exec';
 const CIRC = 2 * Math.PI * 21;
 
-const CATEGORIES = [
+// ── Dynamic date range ──
+const _nowYear = new Date().getFullYear();
+const MIN_YEAR = _nowYear - 5, MIN_MONTH = 0;
+const MAX_YEAR = _nowYear + 5, MAX_MONTH = 11;
+
+// ── Default categories ──
+const DEFAULT_CATEGORIES = [
   { name: 'Grocery',       color: '#059669', bg: '#d1fae5' },
   { name: 'Restaurant',    color: '#ea580c', bg: '#ffedd5' },
   { name: 'Gas',           color: '#2563eb', bg: '#dbeafe' },
@@ -416,8 +391,19 @@ const CATEGORIES = [
   { name: 'Entertainment', color: '#db2777', bg: '#fce7f3' },
   { name: 'Other',         color: '#475569', bg: '#f1f5f9' },
 ];
-const CAT_MAP = Object.fromEntries(CATEGORIES.map(c => [c.name, c]));
-function getCat(name) { return CAT_MAP[name] || CAT_MAP['Other']; }
+
+const COLOR_OPTIONS = [
+  { color: '#059669', bg: '#d1fae5' },
+  { color: '#ea580c', bg: '#ffedd5' },
+  { color: '#2563eb', bg: '#dbeafe' },
+  { color: '#7c3aed', bg: '#ede9fe' },
+  { color: '#dc2626', bg: '#fee2e2' },
+  { color: '#db2777', bg: '#fce7f3' },
+  { color: '#475569', bg: '#f1f5f9' },
+  { color: '#0891b2', bg: '#cffafe' },
+  { color: '#65a30d', bg: '#ecfccb' },
+  { color: '#d97706', bg: '#fef3c7' },
+];
 
 const CURRENCIES = [
   { symbol: '$',  label: '$ Dollar' },
@@ -436,49 +422,83 @@ const WEEK_STARTS = [
   { label: 'Saturday', value: 6 },
 ];
 
-// ── Auth state ──
-let gCredential = null;
-let gUserEmail  = null;
-let gUserName   = null;
+// ── Auth ──
+let gCredential = null, gUserEmail = null, gUserName = null;
 
 // ── Setup state ──
-let setupCurrency  = '$';
-let setupWeekStart = 0;
-let setupMode      = 'onboarding';
+let setupCurrency = '$', setupWeekStart = 0, setupMode = 'onboarding';
+let addCatFormOpen = false, selectedColorIdx = 0;
 
 // ── Settings helpers ──
-function settingsKey() { return `em_settings_${gUserEmail}`; }
-function getUserSettings() {
-  const s = localStorage.getItem(settingsKey());
-  return s ? JSON.parse(s) : null;
-}
+function settingsKey()   { return `em_settings_${gUserEmail}`; }
+function categoriesKey() { return `em_categories_${gUserEmail}`; }
+function getUserSettings() { const s = localStorage.getItem(settingsKey()); return s ? JSON.parse(s) : null; }
 function saveUserSettings(s) { localStorage.setItem(settingsKey(), JSON.stringify(s)); }
+function getCategories() { const s = localStorage.getItem(categoriesKey()); return s ? JSON.parse(s) : [...DEFAULT_CATEGORIES]; }
+function saveCategories(cats) { localStorage.setItem(categoriesKey(), JSON.stringify(cats)); }
+function getCat(name) { return getCategories().find(c => c.name === name) || { color: '#475569', bg: '#f1f5f9' }; }
 function curr() { const s = getUserSettings(); return s ? s.currency : '$'; }
 function weekStartDay() { const s = getUserSettings(); return s !== null ? s.weekStart : 0; }
 
-// ── Auth ──
+// ── Week budget / split ──
+function splitModeKey()  { return `em_split_${gUserEmail}_${viewYear}_${pad(viewMonth+1)}`; }
+function weekBudgetKey(w){ return `em_wbudget_${gUserEmail}_${viewYear}_${pad(viewMonth+1)}_W${w}`; }
+function getSplitMode()  { return localStorage.getItem(splitModeKey()) || 'equal'; }
+function getWeekCap(w) {
+  if (getSplitMode() === 'custom') {
+    const c = parseFloat(localStorage.getItem(weekBudgetKey(w)));
+    if (c > 0) return c;
+  }
+  const nw = numWeeks(viewYear, viewMonth);
+  return nw > 0 ? getBudget() / nw : 0;
+}
+
+let editingWeek = null;
+
+function setSplit(mode) {
+  localStorage.setItem(splitModeKey(), mode);
+  document.getElementById('stEqual').className  = `stbtn${mode==='equal'?' active':''}`;
+  document.getElementById('stCustom').className = `stbtn${mode==='custom'?' active':''}`;
+  renderWeeks();
+}
+
+function openWeekBudgetForm(w) {
+  editingWeek = w;
+  const saved = parseFloat(localStorage.getItem(weekBudgetKey(w)));
+  document.getElementById('wbTitle').textContent = `Week ${w} Budget`;
+  document.getElementById('iWkBudget').value = saved > 0 ? saved : '';
+  document.getElementById('weekBudgetModal').style.display = 'flex';
+  setTimeout(() => document.getElementById('iWkBudget').focus(), 80);
+}
+function closeWeekBudget() { document.getElementById('weekBudgetModal').style.display = 'none'; editingWeek = null; }
+function saveWeekBudget() {
+  if (!editingWeek) return;
+  const val = parseFloat(document.getElementById('iWkBudget').value);
+  if (val > 0) localStorage.setItem(weekBudgetKey(editingWeek), val);
+  closeWeekBudget(); renderWeeks(); renderHeader(); toast(`Week ${editingWeek} budget set`);
+}
+function resetWeekBudget() {
+  if (!editingWeek) return;
+  localStorage.removeItem(weekBudgetKey(editingWeek));
+  closeWeekBudget(); renderWeeks(); renderHeader(); toast('Reset to equal split');
+}
+
+// ── Auth flow ──
 function handleCredentialResponse(response) {
   gCredential = response.credential;
   const payload = JSON.parse(atob(gCredential.split('.')[1]));
   gUserEmail = payload.email;
   gUserName  = payload.given_name || payload.name.split(' ')[0];
   scheduleTokenRefresh(payload.exp);
-
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('userName').textContent = gUserName;
-
-  if (!getUserSettings()) {
-    openSetup('onboarding');
-  } else {
-    document.getElementById('mainApp').style.display = 'block';
-    loadFromSheet();
-  }
+  if (!getUserSettings()) { openSetup('onboarding'); }
+  else { document.getElementById('mainApp').style.display = 'block'; loadFromSheet(); }
 }
 
 function signOut() {
   google.accounts.id.disableAutoSelect();
-  gCredential = null; gUserEmail = null; gUserName = null;
-  exps = [];
+  gCredential = null; gUserEmail = null; gUserName = null; exps = [];
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
@@ -495,6 +515,7 @@ function openSetup(mode) {
   const s = getUserSettings();
   setupCurrency  = s ? s.currency  : '$';
   setupWeekStart = s ? s.weekStart : 0;
+  addCatFormOpen = false;
 
   document.getElementById('sBudget').value = s ? s.defaultBudget : '';
   document.getElementById('sBudget').classList.remove('err');
@@ -504,48 +525,100 @@ function openSetup(mode) {
   document.getElementById('setupCancelBtn').style.display = mode === 'settings' ? 'block' : 'none';
 
   renderSetupPills();
+  renderCategoryManager();
   document.getElementById('setupScreen').style.display = 'flex';
 }
 
-function closeSetup() {
-  document.getElementById('setupScreen').style.display = 'none';
-}
+function closeSetup() { document.getElementById('setupScreen').style.display = 'none'; }
 
 function renderSetupPills() {
   document.getElementById('currencyPills').innerHTML = CURRENCIES.map(c =>
-    `<div class="setup-pill${setupCurrency === c.symbol ? ' active' : ''}" onclick="pickCurrency('${c.symbol}')">${c.label}</div>`
+    `<div class="setup-pill${setupCurrency===c.symbol?' active':''}" onclick="pickCurrency('${c.symbol}')">${c.label}</div>`
   ).join('');
   document.getElementById('weekStartPills').innerHTML = WEEK_STARTS.map(w =>
-    `<div class="setup-pill${setupWeekStart === w.value ? ' active' : ''}" onclick="pickWeekStart(${w.value})">${w.label}</div>`
+    `<div class="setup-pill${setupWeekStart===w.value?' active':''}" onclick="pickWeekStart(${w.value})">${w.label}</div>`
   ).join('');
 }
 
-function pickCurrency(symbol)  { setupCurrency  = symbol; renderSetupPills(); }
-function pickWeekStart(val)    { setupWeekStart = val;    renderSetupPills(); }
+function pickCurrency(s)  { setupCurrency  = s; renderSetupPills(); }
+function pickWeekStart(v) { setupWeekStart = v; renderSetupPills(); }
+
+function renderCategoryManager() {
+  const cats = getCategories();
+  document.getElementById('catMgr').innerHTML = cats.map(c =>
+    `<div class="cat-mgr-row">
+      <div class="cat-mgr-dot" style="background:${c.color}"></div>
+      <span class="cat-mgr-name">${c.name}</span>
+      ${c.name !== 'Other'
+        ? `<button class="cat-mgr-del" onclick="deleteCategory('${c.name}')">✕</button>`
+        : '<span style="font-size:10px;color:#94a3b8">default</span>'}
+    </div>`
+  ).join('');
+
+  const addArea = document.getElementById('catAddArea');
+  if (addCatFormOpen) {
+    addArea.innerHTML = `
+      <div class="cat-add-form">
+        <input id="iCatName" class="cat-add-input" type="text" placeholder="Category name..." maxlength="20" autocomplete="off">
+        <div class="color-swatches">${COLOR_OPTIONS.map((c,i) =>
+          `<div class="color-swatch${selectedColorIdx===i?' active':''}"
+            style="background:${c.color}"
+            onclick="pickColor(${i})"></div>`
+        ).join('')}</div>
+        <div class="cat-add-btns">
+          <button class="cat-add-cancel-btn" onclick="closeCatForm()">Cancel</button>
+          <button class="cat-add-save" onclick="addCategory()">Add</button>
+        </div>
+      </div>`;
+  } else {
+    addArea.innerHTML = `<button class="cat-add-btn" onclick="openCatForm()">＋ Add Category</button>`;
+  }
+}
+
+function openCatForm()  { addCatFormOpen = true;  selectedColorIdx = 0; renderCategoryManager(); setTimeout(() => document.getElementById('iCatName')?.focus(), 80); }
+function closeCatForm() { addCatFormOpen = false; renderCategoryManager(); }
+function pickColor(i)   { selectedColorIdx = i; renderCategoryManager(); }
+
+function addCategory() {
+  const nameEl = document.getElementById('iCatName');
+  const name = nameEl ? nameEl.value.trim() : '';
+  if (!name) { if (nameEl) nameEl.style.borderColor = 'var(--red)'; return; }
+  const cats = getCategories();
+  if (cats.find(c => c.name.toLowerCase() === name.toLowerCase())) {
+    if (nameEl) nameEl.style.borderColor = 'var(--red)'; return;
+  }
+  const col = COLOR_OPTIONS[selectedColorIdx];
+  cats.splice(cats.length - 1, 0, { name, color: col.color, bg: col.bg }); // insert before Other
+  saveCategories(cats);
+  addCatFormOpen = false;
+  renderCategoryManager();
+}
+
+function deleteCategory(name) {
+  if (name === 'Other') return;
+  let cats = getCategories().filter(c => c.name !== name);
+  saveCategories(cats);
+  renderCategoryManager();
+}
 
 function saveSetup() {
   const budget = parseFloat(document.getElementById('sBudget').value);
-  if (!budget || budget <= 0) {
-    document.getElementById('sBudget').classList.add('err');
-    return;
-  }
+  if (!budget || budget <= 0) { document.getElementById('sBudget').classList.add('err'); return; }
   saveUserSettings({ currency: setupCurrency, weekStart: setupWeekStart, defaultBudget: budget });
   closeSetup();
   if (setupMode === 'onboarding') {
     document.getElementById('mainApp').style.display = 'block';
     loadFromSheet();
   } else {
-    render();
-    toast('Settings saved');
+    render(); toast('Settings saved');
   }
 }
 
-// ── Budget (per user, per month) ──
+// ── Budget ──
 function budgetKey() { return `em_budget_${gUserEmail}_${viewYear}_${pad(viewMonth+1)}`; }
 function getBudget() {
   const s = getUserSettings();
-  const def = s ? s.defaultBudget : 500;
-  return parseFloat(localStorage.getItem(budgetKey())) || def;
+  return parseFloat(localStorage.getItem(budgetKey())) || (s ? s.defaultBudget : 500);
 }
 function numWeeks(year, month) {
   const days = new Date(year, month+1, 0).getDate();
@@ -554,20 +627,11 @@ function numWeeks(year, month) {
   for (let d = fs; d <= days; d += 7) count++;
   return count;
 }
-function weekCap() {
-  const nw = numWeeks(viewYear, viewMonth);
-  return nw > 0 ? getBudget() / nw : 0;
-}
 
-let exps = [];
-let editId = null;
-let selectedCategory = 'Grocery';
-let undoPending = null;
-let undoTimer   = null;
+let exps = [], editId = null, selectedCategory = 'Grocery';
+let undoPending = null, undoTimer = null;
 
 // ── Month navigation ──
-const MIN_YEAR = 2020, MIN_MONTH = 0;
-const MAX_YEAR = 2035, MAX_MONTH = 11;
 const _now = new Date();
 let viewYear = _now.getFullYear(), viewMonth = _now.getMonth();
 
@@ -578,7 +642,13 @@ function changeMonth(dir) {
   if (y < MIN_YEAR || (y === MIN_YEAR && m < MIN_MONTH)) return;
   if (y > MAX_YEAR || (y === MAX_YEAR && m > MAX_MONTH)) return;
   viewYear = y; viewMonth = m;
-  render();
+  updateSplitToggle(); render();
+}
+
+function updateSplitToggle() {
+  const mode = getSplitMode();
+  document.getElementById('stEqual').className  = `stbtn${mode==='equal'?' active':''}`;
+  document.getElementById('stCustom').className = `stbtn${mode==='custom'?' active':''}`;
 }
 
 // ── Swipe ──
@@ -611,16 +681,10 @@ function api(params) {
 
 function loadFromSheet() {
   document.getElementById('txArea').innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>';
-  renderHeader(); renderWeeks();
+  updateSplitToggle(); renderHeader(); renderWeeks();
   api({ action: 'list' })
-    .then(data => {
-      if (Array.isArray(data)) exps = data.map(e => ({ ...e, amount: Number(e.amount) }));
-      render();
-    })
-    .catch(() => {
-      document.getElementById('txArea').innerHTML =
-        '<div class="empty"><div class="eicon">⚠️</div>Could not load data. Check your connection.</div>';
-    });
+    .then(data => { if (Array.isArray(data)) exps = data.map(e => ({ ...e, amount: Number(e.amount) })); render(); })
+    .catch(() => { document.getElementById('txArea').innerHTML = '<div class="empty"><div class="eicon">⚠️</div>Could not load data.</div>'; });
 }
 
 async function apiAction(params) {
@@ -631,21 +695,15 @@ async function apiAction(params) {
 }
 
 // ── Date helpers ──
-function todayStr() {
-  const d = new Date();
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-}
+function todayStr() { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
 function pad(n) { return String(n).padStart(2,'0'); }
-function fmtDate(s) {
-  const [y,m,d] = s.split('-').map(Number);
-  return new Date(y,m-1,d).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-}
+function fmtDate(s) { const [y,m,d] = s.split('-').map(Number); return new Date(y,m-1,d).toLocaleDateString('en-US',{month:'short',day:'numeric'}); }
 
 // ── Week logic ──
 function firstWeekStart(year, month) {
-  const startDay = weekStartDay();
+  const sd = weekStartDay();
   const d = new Date(year, month, 1);
-  while (d.getDay() !== startDay) d.setDate(d.getDate()+1);
+  while (d.getDay() !== sd) d.setDate(d.getDate()+1);
   return d.getDate();
 }
 function weekOf(dateStr, year, month) {
@@ -667,16 +725,12 @@ function weekSpents() {
   exps.forEach(e => { const w = weekOf(e.date, viewYear, viewMonth); if(w) ws[w-1] += e.amount; });
   return ws;
 }
-function monthExps() {
-  const prefix = `${viewYear}-${pad(viewMonth+1)}`;
-  return exps.filter(e => e.date.startsWith(prefix));
-}
+function monthExps() { return exps.filter(e => e.date.startsWith(`${viewYear}-${pad(viewMonth+1)}`)); }
 
 // ── Render ──
 function renderHeader() {
   const c = curr();
-  document.getElementById('hMonth').textContent =
-    new Date(viewYear, viewMonth, 1).toLocaleDateString('en-US',{month:'short',year:'numeric'});
+  document.getElementById('hMonth').textContent = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-US',{month:'short',year:'numeric'});
   const budget = getBudget();
   const me     = monthExps();
   const spent  = me.filter(e => e.category === 'Grocery').reduce((s,e)=>s+e.amount, 0);
@@ -697,21 +751,23 @@ function renderHeader() {
 
 function renderWeeks() {
   const c = curr();
-  const nw   = numWeeks(viewYear, viewMonth);
-  const wcap = weekCap();
-  const ws   = weekSpents(), cw = curWeek();
+  const nw = numWeeks(viewYear, viewMonth);
+  const ws = weekSpents(), cw = curWeek();
+  const isCustom = getSplitMode() === 'custom';
   const grid = document.getElementById('wgrid');
   grid.innerHTML = '';
   for (let w=1; w<=nw; w++) {
-    const spent  = ws[w-1];
-    const pct    = wcap > 0 ? Math.min(spent/wcap, 1) : 0;
-    const bal    = wcap - spent;
-    const fill   = (pct*CIRC).toFixed(1);
-    const gap    = (CIRC - pct*CIRC).toFixed(1);
-    const cls    = pct>=1?'over':pct>=0.75?'warn':'';
-    const active = w===cw;
-    const el     = document.createElement('div');
-    el.className = `wcard${active?' cur':''}`;
+    const spent = ws[w-1];
+    const wcap  = getWeekCap(w);
+    const pct   = wcap > 0 ? Math.min(spent/wcap, 1) : 0;
+    const bal   = wcap - spent;
+    const fill  = (pct*CIRC).toFixed(1);
+    const gap   = (CIRC - pct*CIRC).toFixed(1);
+    const cls   = pct>=1?'over':pct>=0.75?'warn':'';
+    const active= w===cw;
+    const el    = document.createElement('div');
+    el.className = `wcard${active?' cur':''}${isCustom?' custom-mode':''}`;
+    if (isCustom) el.onclick = () => openWeekBudgetForm(w);
     el.innerHTML = `
       <div class="wlabel">W${w}</div>
       <div class="ring">
@@ -722,7 +778,8 @@ function renderWeeks() {
         <div class="rpct">${Math.round(pct*100)}%</div>
       </div>
       <div class="wbal${bal<0?' neg':''}">${c}${Math.abs(bal).toFixed(0)}</div>
-      <div class="wsub">${bal<0?'over':'left'}</div>`;
+      <div class="wsub">${bal<0?'over':'left'}</div>
+      ${isCustom?'<div class="wedit">✏️ tap to set</div>':''}`;
     grid.appendChild(el);
   }
 }
@@ -744,17 +801,14 @@ function renderTxs() {
   const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
   let cur = monthExps().sort((a,b) => b.date.localeCompare(a.date));
   if (search) cur = cur.filter(e => e.desc.toLowerCase().includes(search) || (e.notes||'').toLowerCase().includes(search));
-
   if (!cur.length) {
     area.innerHTML = search
       ? '<div class="empty"><div class="eicon">🔍</div>No results found</div>'
       : '<div class="empty"><div class="eicon">💸</div>No expenses yet this month</div>';
     return;
   }
-
   const groups = {};
   cur.forEach(e => { const w = weekOf(e.date,y,m)||1; if(!groups[w]) groups[w]=[]; groups[w].push(e); });
-
   const cw = curWeek();
   let html = '';
   Object.keys(groups).sort((a,b)=>b-a).forEach(w => {
@@ -789,21 +843,18 @@ function renderTxs() {
             <button class="icbtn" onclick="delExp('${e.id}')">🗑️</button>
           </div>
         </div>`;
-      }).join('') +
-      `</div></div>`;
+      }).join('') + `</div></div>`;
   });
   area.innerHTML = html;
 }
 
 function render() { renderHeader(); renderWeeks(); renderTxs(); }
 
-// ── Category pills ──
+// ── Category pills (form) ──
 function renderCategoryPills() {
-  document.getElementById('catWrap').innerHTML = CATEGORIES.map(c => {
+  document.getElementById('catWrap').innerHTML = getCategories().map(c => {
     const active = selectedCategory === c.name;
-    const style  = active
-      ? `background:${c.bg};border-color:${c.color};color:${c.color}`
-      : 'background:#f8fafc;border-color:#e2e8f0;color:#64748b';
+    const style  = active ? `background:${c.bg};border-color:${c.color};color:${c.color}` : 'background:#f8fafc;border-color:#e2e8f0;color:#64748b';
     return `<div class="cat-pill" style="${style}" onclick="setCategory('${c.name}')">${c.name}</div>`;
   }).join('');
 }
@@ -813,55 +864,43 @@ function setCategory(name) { selectedCategory = name; renderCategoryPills(); }
 function toggleForm() {
   const fc = document.getElementById('fcard');
   if (fc.style.display !== 'none') { closeForm(); return; }
-  editId = null; selectedCategory = 'Grocery';
-  document.getElementById('fhd').textContent    = 'New Expense';
-  document.getElementById('iDesc').value        = '';
-  document.getElementById('iAmt').value         = '';
-  document.getElementById('iDate').value        = todayStr();
-  document.getElementById('iDate').max          = todayStr();
-  document.getElementById('iNotes').value       = '';
+  editId = null;
+  selectedCategory = getCategories()[0]?.name || 'Other';
+  document.getElementById('fhd').textContent  = 'New Expense';
+  document.getElementById('iDesc').value      = '';
+  document.getElementById('iAmt').value       = '';
+  document.getElementById('iDate').value      = todayStr();
+  document.getElementById('iDate').max        = todayStr();
+  document.getElementById('iNotes').value     = '';
   renderCategoryPills(); clearErrs();
   fc.style.display = 'block';
   setTimeout(() => document.getElementById('iDesc').focus(), 80);
 }
 
-function closeForm() {
-  document.getElementById('fcard').style.display = 'none';
-  editId = null; selectedCategory = 'Grocery'; clearErrs();
-}
-
+function closeForm() { document.getElementById('fcard').style.display = 'none'; editId = null; selectedCategory = getCategories()[0]?.name || 'Other'; clearErrs(); }
 function clearErrs() {
   ['iDesc','iAmt','iDate'].forEach(id => document.getElementById(id).classList.remove('err'));
   ['eDesc','eAmt','eDate'].forEach(id => document.getElementById(id).textContent = '');
 }
+function setErr(fi, ei, msg) { document.getElementById(fi).classList.add('err'); document.getElementById(ei).textContent = msg; }
 
-function setErr(fi, ei, msg) {
-  document.getElementById(fi).classList.add('err');
-  document.getElementById(ei).textContent = msg;
-}
-
-document.getElementById('iDesc').addEventListener('input', function(){
-  this.value = this.value.replace(/[^a-zA-Z ]/g, '');
-});
+document.getElementById('iDesc').addEventListener('input', function(){ this.value = this.value.replace(/[^a-zA-Z ]/g, ''); });
 
 async function saveExp() {
   clearErrs();
-  let ok    = true;
+  let ok = true;
   const desc     = document.getElementById('iDesc').value.trim();
   const amt      = parseFloat(document.getElementById('iAmt').value);
   const date     = document.getElementById('iDate').value;
   const notes    = document.getElementById('iNotes').value.trim();
   const category = selectedCategory;
-
   if (!desc)                { setErr('iDesc','eDesc','Required'); ok=false; }
   if (!amt||amt<=0)         { setErr('iAmt','eAmt','Enter amount'); ok=false; }
   if (!date)                { setErr('iDate','eDate','Required'); ok=false; }
   else if (date>todayStr()) { setErr('iDate','eDate','No future dates'); ok=false; }
   if (!ok) return;
-
   const currentEditId = editId;
   closeForm();
-
   if (currentEditId) {
     const i = exps.findIndex(e=>e.id===currentEditId);
     if (i !== -1) exps[i] = { ...exps[i], desc, amount: amt, date, category, notes };
@@ -880,7 +919,7 @@ async function saveExp() {
 function startEdit(id) {
   const e = exps.find(x=>x.id===id);
   if (!e) return;
-  editId = id; selectedCategory = e.category || 'Grocery';
+  editId = id; selectedCategory = e.category || getCategories()[0]?.name || 'Other';
   document.getElementById('fhd').textContent  = 'Edit Expense';
   document.getElementById('iDesc').value      = e.desc;
   document.getElementById('iAmt').value       = e.amount;
@@ -895,58 +934,38 @@ function startEdit(id) {
 
 // ── Undo delete ──
 async function delExp(id) {
-  if (undoPending) {
-    clearTimeout(undoTimer);
-    hideUndoToast();
-    await apiAction({ action:'delete', id: undoPending.id });
-    undoPending = null;
-  }
+  if (undoPending) { clearTimeout(undoTimer); hideUndoToast(); await apiAction({ action:'delete', id: undoPending.id }); undoPending = null; }
   const exp = exps.find(e=>e.id===id);
   if (!exp) return;
-  exps = exps.filter(e=>e.id!==id);
-  render();
+  exps = exps.filter(e=>e.id!==id); render();
   undoPending = exp;
   undoTimer = setTimeout(async () => {
-    if (undoPending && undoPending.id === id) {
-      await apiAction({ action:'delete', id });
-      undoPending = null;
-    }
+    if (undoPending && undoPending.id === id) { await apiAction({ action:'delete', id }); undoPending = null; }
     hideUndoToast();
   }, 5000);
   showUndoToast();
 }
-
 function undoDelete() {
   if (!undoPending) return;
-  clearTimeout(undoTimer);
-  exps.push(undoPending);
-  undoPending = null;
-  render(); hideUndoToast();
-  toast('Restored!');
+  clearTimeout(undoTimer); exps.push(undoPending); undoPending = null;
+  render(); hideUndoToast(); toast('Restored!');
 }
 function showUndoToast() { document.getElementById('undoToast').classList.add('show'); }
 function hideUndoToast() { document.getElementById('undoToast').classList.remove('show'); }
 
 // ── Congrats banner ──
-function lastSatDay(year, month) {
-  const d = new Date(year, month+1, 0);
-  while (d.getDay() !== 6) d.setDate(d.getDate()-1);
-  return d.getDate();
-}
+function lastSatDay(year, month) { const d = new Date(year, month+1, 0); while (d.getDay() !== 6) d.setDate(d.getDate()-1); return d.getDate(); }
 function renderCongrats(left) {
-  const c      = curr();
+  const c = curr();
   const banner = document.getElementById('congratsBanner');
-  const now    = new Date();
+  const now = new Date();
   const isCurrentMonth = viewYear === now.getFullYear() && viewMonth === now.getMonth();
   const isPastMonth    = viewYear < now.getFullYear() || (viewYear === now.getFullYear() && viewMonth < now.getMonth());
-  const lastSat  = lastSatDay(viewYear, viewMonth);
-  const isLastWeek = isCurrentMonth && now.getDate() >= lastSat;
+  const isLastWeek = isCurrentMonth && now.getDate() >= lastSatDay(viewYear, viewMonth);
   if ((isLastWeek || isPastMonth) && left > 0) {
     document.getElementById('congratsTitle').textContent = `Great job! You saved ${c}${left.toFixed(0)} this month! 🌟`;
     banner.style.display = 'flex';
-  } else {
-    banner.style.display = 'none';
-  }
+  } else { banner.style.display = 'none'; }
 }
 function dismissCongrats() { document.getElementById('congratsBanner').style.display = 'none'; }
 
@@ -972,15 +991,14 @@ function toast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
 }
-
 function showSaving(on) {
-  const existing = document.getElementById('savingOverlay');
-  if (on && !existing) {
+  const ex = document.getElementById('savingOverlay');
+  if (on && !ex) {
     const div = document.createElement('div');
     div.id = 'savingOverlay'; div.className = 'saving-overlay';
     div.innerHTML = '<div class="saving-box"><div class="spinner"></div><div class="saving-label">Saving...</div></div>';
     document.body.appendChild(div);
-  } else if (!on && existing) { existing.remove(); }
+  } else if (!on && ex) { ex.remove(); }
 }
 </script>
 </body>
