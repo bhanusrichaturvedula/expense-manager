@@ -28,6 +28,8 @@
     .login-title { font-size: 24px; font-weight: 800; color: #075985; margin-bottom: 8px; }
     .login-sub { font-size: 13px; color: #64748b; margin-bottom: 32px; line-height: 1.6; }
     .login-btn-wrap { display: flex; justify-content: center; }
+    .login-divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; color: #94a3b8; font-size: 12px; }
+    .login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
 
     /* ── Setup / Settings ── */
     #setupScreen { position: fixed; inset: 0; display: flex; align-items: flex-start; justify-content: center; background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%); padding: 20px; z-index: 200; overflow-y: auto; }
@@ -215,7 +217,9 @@
   <div class="login-card">
     <div class="login-icon">💰</div>
     <div class="login-title">Expense Manager</div>
-    <div class="login-sub">Track your monthly expenses.<br>Sign in with your Google account to get started.</div>
+    <div class="login-sub">New here? Create your free account.<br>Your data is private and secure.</div>
+    <div class="login-btn-wrap"><div id="gSignUpBtn"></div></div>
+    <div class="login-divider">Already have an account?</div>
     <div class="login-btn-wrap"><div id="gSignInBtn"></div></div>
   </div>
 </div>
@@ -501,7 +505,7 @@ function resetWeekBudget() {
 }
 
 // ── Auth flow ──
-function handleCredentialResponse(response) {
+async function handleCredentialResponse(response) {
   gCredential = response.credential;
   const payload = JSON.parse(atob(gCredential.split('.')[1]));
   gUserEmail = payload.email;
@@ -509,8 +513,28 @@ function handleCredentialResponse(response) {
   scheduleTokenRefresh(payload.exp);
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('userName').textContent = gUserName;
-  if (!getUserSettings()) { openSetup('onboarding'); }
-  else { document.getElementById('mainApp').style.display = 'block'; loadFromSheet(); }
+
+  // Show app shell with loading state while we fetch their saved settings
+  document.getElementById('mainApp').style.display = 'block';
+  document.getElementById('txArea').innerHTML = '<div class="loading"><div class="spinner"></div>Loading your account...</div>';
+
+  try {
+    const data = await api({ action: 'getSettings' });
+    if (data.settings) {
+      // Returning user — restore settings silently, go straight to their data
+      saveUserSettings(data.settings);
+      if (data.categories) saveCategories(data.categories);
+      loadFromSheet();
+    } else {
+      // New user — show one-time onboarding
+      document.getElementById('mainApp').style.display = 'none';
+      openSetup('onboarding');
+    }
+  } catch(e) {
+    // Offline fallback — use localStorage if available
+    if (!getUserSettings()) { document.getElementById('mainApp').style.display = 'none'; openSetup('onboarding'); }
+    else loadFromSheet();
+  }
 }
 
 function signOut() {
@@ -607,6 +631,7 @@ function addCategory() {
   const col = COLOR_OPTIONS[selectedColorIdx];
   cats.splice(cats.length - 1, 0, { name, color: col.color, bg: col.bg }); // insert before Other
   saveCategories(cats);
+  syncSettingsToSheet();
   addCatFormOpen = false;
   renderCategoryManager();
 }
@@ -615,6 +640,7 @@ function deleteCategory(name) {
   if (name === 'Other') return;
   let cats = getCategories().filter(c => c.name !== name);
   saveCategories(cats);
+  syncSettingsToSheet();
   renderCategoryManager();
 }
 
@@ -622,6 +648,7 @@ function saveSetup() {
   const budget = parseFloat(document.getElementById('sBudget').value);
   if (!budget || budget <= 0) { document.getElementById('sBudget').classList.add('err'); return; }
   saveUserSettings({ currency: setupCurrency, weekStart: setupWeekStart, defaultBudget: budget });
+  syncSettingsToSheet();
   closeSetup();
   if (setupMode === 'onboarding') {
     document.getElementById('mainApp').style.display = 'block';
@@ -629,6 +656,12 @@ function saveSetup() {
   } else {
     render(); toast('Settings saved');
   }
+}
+
+function syncSettingsToSheet() {
+  const s = getUserSettings();
+  if (!s || !gCredential) return;
+  api({ action: 'saveSettings', settings: JSON.stringify(s), categories: JSON.stringify(getCategories()) }).catch(() => {});
 }
 
 // ── Budget ──
@@ -682,7 +715,8 @@ document.addEventListener('touchend', e => {
 // ── Boot ──
 window.addEventListener('DOMContentLoaded', () => {
   google.accounts.id.initialize({ client_id: CLIENT_ID, callback: handleCredentialResponse, auto_select: true });
-  google.accounts.id.renderButton(document.getElementById('gSignInBtn'), { theme: 'outline', size: 'large', width: 240, text: 'signin_with' });
+  google.accounts.id.renderButton(document.getElementById('gSignUpBtn'), { theme: 'filled_blue', size: 'large', width: 240, text: 'signup_with' });
+  google.accounts.id.renderButton(document.getElementById('gSignInBtn'), { theme: 'outline',     size: 'large', width: 240, text: 'signin_with' });
   google.accounts.id.prompt();
 });
 
