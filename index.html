@@ -138,8 +138,23 @@
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
+
+    /* ── Search ── */
+    .search-wrap { position: relative; margin-bottom: 12px; }
+    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; }
+    .search-fi {
+      width: 100%;
+      padding: 10px 12px 10px 34px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--text);
+      background: white;
+      outline: none;
+    }
+    .search-fi:focus { border-color: var(--b3); }
 
     /* ── Form ── */
     .fcard { background: var(--card); border-radius: 14px; padding: 16px; margin-bottom: 12px; border: 1.5px solid var(--border); box-shadow: 0 2px 12px rgba(37,99,235,0.07); }
@@ -154,6 +169,33 @@
     .fbts { display: flex; gap: 8px; margin-top: 14px; }
     .bsave { flex: 1; padding: 12px; background: var(--b2); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
     .bcancel { padding: 12px 16px; background: #f1f5f9; color: var(--muted); border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+
+    /* ── Category pills (form) ── */
+    .cat-wrap { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .cat-wrap::-webkit-scrollbar { display: none; }
+    .cat-pill {
+      flex-shrink: 0;
+      padding: 6px 13px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      color: var(--muted);
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    /* ── Category badge (transaction) ── */
+    .cat-badge {
+      flex-shrink: 0;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
 
     /* ── Transactions ── */
     .stitle { font-size: 11px; font-weight: 700; color: var(--b2); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 9px; }
@@ -180,16 +222,12 @@
     .txs { display: flex; flex-direction: column; gap: 7px; }
     .tx { background: var(--card); border-radius: 10px; padding: 11px 12px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
     .txinfo { flex: 1; min-width: 0; }
-    .txdesc { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 5px; }
-    .exclaim { flex-shrink: 0; width: 17px; height: 17px; background: #f59e0b; color: white; border-radius: 50%; font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
-    .check-row { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; cursor: pointer; user-select: none; }
-    .check-box { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 5px; background: var(--bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-    .check-box.checked { background: var(--b2); border-color: var(--b2); }
-    .check-box.checked::after { content: '✓'; color: white; font-size: 12px; font-weight: 800; }
-    .check-text { font-size: 14px; color: var(--text); font-weight: 500; }
+    .txdesc { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 6px; min-width: 0; }
+    .txdesc-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .txnotes { font-size: 11px; color: #94a3b8; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .txdate { font-size: 11px; color: #94a3b8; margin-top: 2px; }
-    .txamt { font-size: 15px; font-weight: 800; }
-    .txacts { display: flex; gap: 2px; }
+    .txamt { font-size: 15px; font-weight: 800; flex-shrink: 0; }
+    .txacts { display: flex; gap: 2px; flex-shrink: 0; }
     .icbtn { background: none; border: none; cursor: pointer; padding: 5px 6px; font-size: 14px; border-radius: 7px; }
     .icbtn:active { background: #f1f5f9; }
 
@@ -199,6 +237,8 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .empty { text-align: center; padding: 36px 16px; color: #94a3b8; }
     .eicon { font-size: 40px; margin-bottom: 10px; }
+
+    /* ── Toast ── */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -217,6 +257,41 @@
       z-index: 999;
     }
     .toast.show { opacity: 1; }
+
+    /* ── Undo Toast ── */
+    .undo-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      padding: 10px 10px 10px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 998;
+    }
+    .undo-toast.show { opacity: 1; pointer-events: auto; }
+    .undo-btn {
+      background: var(--b3);
+      color: white;
+      border: none;
+      border-radius: 100px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* ── Saving overlay ── */
     .saving-overlay {
       position: fixed; inset: 0;
       background: rgba(255,255,255,0.6);
@@ -301,6 +376,11 @@
   <div class="body">
     <button class="add-btn" onclick="toggleForm()">+ Add Expense</button>
 
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input id="searchInput" class="search-fi" type="text" placeholder="Search expenses..." oninput="renderTxs()">
+    </div>
+
     <div class="fcard" id="fcard" style="display:none">
       <div class="fhd" id="fhd">New Expense</div>
       <div class="fg">
@@ -320,9 +400,13 @@
           <div class="em" id="eDate"></div>
         </div>
       </div>
-      <div class="check-row" onclick="toggleCheck()">
-        <div class="check-box" id="checkBox"></div>
-        <span class="check-text">Non grocery expense</span>
+      <div class="fg">
+        <label class="fl">Category</label>
+        <div class="cat-wrap" id="catWrap"></div>
+      </div>
+      <div class="fg">
+        <label class="fl">Notes <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input id="iNotes" class="fi" type="text" placeholder="Add a note..." maxlength="80" autocomplete="off">
       </div>
       <div class="fbts">
         <button class="bcancel" onclick="closeForm()">Cancel</button>
@@ -338,11 +422,27 @@
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="undo-toast" id="undoToast">
+  <span>Expense deleted</span>
+  <button class="undo-btn" onclick="undoDelete()">Undo</button>
+</div>
 
 <script>
 const CLIENT_ID = '941564315246-inm05c2lv8ohggc3pa0nt7838vkd1d1i.apps.googleusercontent.com';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyTf5AVEXuViksmXbsgP03b5qqG48hDJ2oxJlxx_GFF68VBXVq-ghAhfCZ9Nm9foH-35Q/exec';
 const CIRC = 2 * Math.PI * 21;
+
+const CATEGORIES = [
+  { name: 'Grocery',       color: '#059669', bg: '#d1fae5' },
+  { name: 'Restaurant',    color: '#ea580c', bg: '#ffedd5' },
+  { name: 'Gas',           color: '#2563eb', bg: '#dbeafe' },
+  { name: 'Shopping',      color: '#7c3aed', bg: '#ede9fe' },
+  { name: 'Medical',       color: '#dc2626', bg: '#fee2e2' },
+  { name: 'Entertainment', color: '#db2777', bg: '#fce7f3' },
+  { name: 'Other',         color: '#475569', bg: '#f1f5f9' },
+];
+const CAT_MAP = Object.fromEntries(CATEGORIES.map(c => [c.name, c]));
+function getCat(name) { return CAT_MAP[name] || CAT_MAP['Other']; }
 
 // ── Auth state ──
 let gCredential = null;
@@ -355,44 +455,36 @@ function handleCredentialResponse(response) {
   gUserEmail = payload.email;
   gUserName = payload.given_name || payload.name.split(' ')[0];
   scheduleTokenRefresh(payload.exp);
-
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('mainApp').style.display = 'block';
   document.getElementById('userName').textContent = gUserName;
-
   loadFromSheet();
 }
 
 function signOut() {
   google.accounts.id.disableAutoSelect();
-  gCredential = null;
-  gUserEmail = null;
-  gUserName = null;
+  gCredential = null; gUserEmail = null; gUserName = null;
   exps = [];
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
 }
 
 function scheduleTokenRefresh(exp) {
-  const msUntilRefresh = exp * 1000 - Date.now() - 60000;
-  if (msUntilRefresh > 0) {
-    setTimeout(() => google.accounts.id.prompt(), msUntilRefresh);
-  }
+  const ms = exp * 1000 - Date.now() - 60000;
+  if (ms > 0) setTimeout(() => google.accounts.id.prompt(), ms);
 }
 
 // ── Budget (per user, per month) ──
-function budgetKey() {
-  return `em_budget_${gUserEmail}_${viewYear}_${pad(viewMonth+1)}`;
-}
+function budgetKey() { return `em_budget_${gUserEmail}_${viewYear}_${pad(viewMonth+1)}`; }
 function getBudget() {
-  const defaultBudget = numWeeks(viewYear, viewMonth) === 5 ? 700 : 600;
-  return parseFloat(localStorage.getItem(budgetKey())) || defaultBudget;
+  const def = numWeeks(viewYear, viewMonth) === 5 ? 700 : 600;
+  return parseFloat(localStorage.getItem(budgetKey())) || def;
 }
 function numWeeks(year, month) {
-  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const days = new Date(year, month+1, 0).getDate();
   const fs = firstSatDay(year, month);
   let count = 0;
-  for (let d = fs; d <= daysInMonth; d += 7) count++;
+  for (let d = fs; d <= days; d += 7) count++;
   return count;
 }
 function weekCap() {
@@ -402,7 +494,11 @@ function weekCap() {
 
 let exps = [];
 let editId = null;
-let isNonGrocery = false;
+let selectedCategory = 'Grocery';
+
+// ── Undo delete ──
+let undoPending = null;
+let undoTimer = null;
 
 // ── Month navigation ──
 const MIN_YEAR = 2026, MIN_MONTH = 0;
@@ -420,7 +516,7 @@ function changeMonth(dir) {
   render();
 }
 
-// ── Swipe to change month ──
+// ── Swipe ──
 let swipeStartX = null;
 document.addEventListener('touchstart', e => { swipeStartX = e.touches[0].clientX; }, { passive: true });
 document.addEventListener('touchend', e => {
@@ -453,10 +549,7 @@ function api(params) {
   return fetch(`${SCRIPT_URL}?${qs}`)
     .then(r => r.json())
     .then(data => {
-      if (data.error && data.error.includes('authenticated')) {
-        signOut();
-        throw new Error(data.error);
-      }
+      if (data.error && data.error.includes('authenticated')) { signOut(); throw new Error(data.error); }
       return data;
     });
 }
@@ -464,13 +557,10 @@ function api(params) {
 function loadFromSheet() {
   document.getElementById('txArea').innerHTML =
     '<div class="loading"><div class="spinner"></div>Loading...</div>';
-  renderHeader();
-  renderWeeks();
+  renderHeader(); renderWeeks();
   api({ action: 'list' })
     .then(data => {
-      if (Array.isArray(data)) {
-        exps = data.map(e => ({ ...e, amount: Number(e.amount) }));
-      }
+      if (Array.isArray(data)) exps = data.map(e => ({ ...e, amount: Number(e.amount) }));
       render();
     })
     .catch(() => {
@@ -481,13 +571,9 @@ function loadFromSheet() {
 
 async function apiAction(params) {
   showSaving(true);
-  try {
-    await api(params);
-  } catch(e) {
-    toast('Could not save. Check internet.');
-  } finally {
-    showSaving(false);
-  }
+  try { await api(params); }
+  catch(e) { toast('Could not save. Check internet.'); }
+  finally { showSaving(false); }
 }
 
 // ── Date helpers ──
@@ -523,7 +609,7 @@ function curWeek() {
 function weekSpents() {
   const nw = numWeeks(viewYear, viewMonth);
   const ws = new Array(nw).fill(0);
-  exps.forEach(e => { const w=weekOf(e.date,viewYear,viewMonth); if(w) ws[w-1]+=e.amount; });
+  exps.forEach(e => { const w = weekOf(e.date,viewYear,viewMonth); if(w) ws[w-1]+=e.amount; });
   return ws;
 }
 function monthExps() {
@@ -537,16 +623,15 @@ function renderHeader() {
     new Date(viewYear, viewMonth, 1).toLocaleDateString('en-US',{month:'short',year:'numeric'});
   const budget = getBudget();
   const me = monthExps();
-  const total = me.reduce((s,e)=>s+e.amount, 0);
-  const other = me.filter(e=>e.nonGrocery===true||e.nonGrocery==='true').reduce((s,e)=>s+e.amount, 0);
-  const spent = total - other;
+  const spent = me.filter(e => e.category === 'Grocery').reduce((s,e)=>s+e.amount, 0);
+  const other = me.filter(e => e.category !== 'Grocery').reduce((s,e)=>s+e.amount, 0);
   const left = budget - spent;
   const pct = budget > 0 ? Math.min(spent/budget, 1) : 0;
   document.getElementById('hBudget').textContent = `$${budget.toFixed(0)}`;
   document.getElementById('hSpent').textContent = `$${spent.toFixed(0)}`;
   document.getElementById('hOther').textContent = `$${other.toFixed(0)}`;
   const lel = document.getElementById('hLeft');
-  lel.textContent = left<0 ? `-$${(-left).toFixed(0)}` : `$${left.toFixed(0)}`;
+  lel.textContent = left < 0 ? `-$${(-left).toFixed(0)}` : `$${left.toFixed(0)}`;
   lel.className = `bval${left<0?' neg':''}`;
   const bar = document.getElementById('mbar');
   bar.style.width = `${pct*100}%`;
@@ -575,8 +660,7 @@ function renderWeeks() {
       <div class="ring">
         <svg width="52" height="52" viewBox="0 0 52 52">
           <circle class="r-bg" cx="26" cy="26" r="21"/>
-          <circle class="r-fg ${cls}" cx="26" cy="26" r="21"
-            stroke-dasharray="${fill} ${gap}"/>
+          <circle class="r-fg ${cls}" cx="26" cy="26" r="21" stroke-dasharray="${fill} ${gap}"/>
         </svg>
         <div class="rpct">${Math.round(pct*100)}%</div>
       </div>
@@ -591,22 +675,22 @@ function getWeekRange(w, year, month) {
   const fs = firstSatDay(year, month);
   const daysInMonth = new Date(year, month+1, 0).getDate();
   let s, e;
-  if (w === 1) {
-    s = 1;
-    e = Math.min(fs+6, daysInMonth);
-  } else {
-    s = fs + (w-1)*7;
-    e = Math.min(s+6, daysInMonth);
-  }
+  if (w === 1) { s = 1; e = Math.min(fs+6, daysInMonth); }
+  else { s = fs + (w-1)*7; e = Math.min(s+6, daysInMonth); }
   return `${MONTHS[month]} ${s}–${e}`;
 }
 
 function renderTxs() {
   const [y,m] = [viewYear, viewMonth];
   const area = document.getElementById('txArea');
-  const cur = monthExps().sort((a,b)=>b.date.localeCompare(a.date));
+  const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+  let cur = monthExps().sort((a,b)=>b.date.localeCompare(a.date));
+  if (search) cur = cur.filter(e => e.desc.toLowerCase().includes(search) || (e.notes||'').toLowerCase().includes(search));
+
   if (!cur.length) {
-    area.innerHTML = '<div class="empty"><div class="eicon">💸</div>No expenses yet this month</div>';
+    area.innerHTML = search
+      ? '<div class="empty"><div class="eicon">🔍</div>No results found</div>'
+      : '<div class="empty"><div class="eicon">💸</div>No expenses yet this month</div>';
     return;
   }
 
@@ -634,20 +718,24 @@ function renderTxs() {
         <span class="wh-total">$${total.toFixed(2)}</span>
       </div>
       <div class="txs">` +
-      items.map(e => `<div class="tx">
-        <div class="txinfo">
-          <div class="txdesc">
-            ${(e.nonGrocery === true || e.nonGrocery === 'true') ? '<span class="exclaim">!</span>' : ''}
-            <span style="overflow:hidden;text-overflow:ellipsis">${e.desc}</span>
+      items.map(e => {
+        const cat = getCat(e.category);
+        return `<div class="tx">
+          <div class="txinfo">
+            <div class="txdesc">
+              <span class="cat-badge" style="background:${cat.bg};color:${cat.color}">${e.category}</span>
+              <span class="txdesc-text">${e.desc}</span>
+            </div>
+            ${e.notes ? `<div class="txnotes">${e.notes}</div>` : ''}
+            <div class="txdate">${fmtDate(e.date)}</div>
           </div>
-          <div class="txdate">${fmtDate(e.date)}</div>
-        </div>
-        <div class="txamt">$${Number(e.amount).toFixed(2)}</div>
-        <div class="txacts">
-          <button class="icbtn" onclick="startEdit('${e.id}')">✏️</button>
-          <button class="icbtn" onclick="delExp('${e.id}')">🗑️</button>
-        </div>
-      </div>`).join('') +
+          <div class="txamt">$${Number(e.amount).toFixed(2)}</div>
+          <div class="txacts">
+            <button class="icbtn" onclick="startEdit('${e.id}')">✏️</button>
+            <button class="icbtn" onclick="delExp('${e.id}')">🗑️</button>
+          </div>
+        </div>`;
+      }).join('') +
       `</div></div>`;
   });
   area.innerHTML = html;
@@ -655,27 +743,36 @@ function renderTxs() {
 
 function render() { renderHeader(); renderWeeks(); renderTxs(); }
 
+// ── Category pills ──
+function renderCategoryPills() {
+  const wrap = document.getElementById('catWrap');
+  wrap.innerHTML = CATEGORIES.map(c => {
+    const active = selectedCategory === c.name;
+    const style = active
+      ? `background:${c.bg};border-color:${c.color};color:${c.color}`
+      : 'background:#f8fafc;border-color:#e2e8f0;color:#64748b';
+    return `<div class="cat-pill" style="${style}" onclick="setCategory('${c.name}')">${c.name}</div>`;
+  }).join('');
+}
+
+function setCategory(name) {
+  selectedCategory = name;
+  renderCategoryPills();
+}
+
 // ── Form ──
-function toggleCheck() {
-  isNonGrocery = !isNonGrocery;
-  document.getElementById('checkBox').className = `check-box${isNonGrocery?' checked':''}`;
-}
-
-function setCheck(val) {
-  isNonGrocery = !!val;
-  document.getElementById('checkBox').className = `check-box${isNonGrocery?' checked':''}`;
-}
-
 function toggleForm() {
   const fc = document.getElementById('fcard');
   if (fc.style.display !== 'none') { closeForm(); return; }
   editId = null;
+  selectedCategory = 'Grocery';
   document.getElementById('fhd').textContent = 'New Expense';
   document.getElementById('iDesc').value = '';
   document.getElementById('iAmt').value = '';
   document.getElementById('iDate').value = todayStr();
   document.getElementById('iDate').max = todayStr();
-  setCheck(false);
+  document.getElementById('iNotes').value = '';
+  renderCategoryPills();
   clearErrs();
   fc.style.display = 'block';
   setTimeout(() => document.getElementById('iDesc').focus(), 80);
@@ -684,7 +781,7 @@ function toggleForm() {
 function closeForm() {
   document.getElementById('fcard').style.display = 'none';
   editId = null;
-  setCheck(false);
+  selectedCategory = 'Grocery';
   clearErrs();
 }
 
@@ -705,30 +802,32 @@ document.getElementById('iDesc').addEventListener('input', function(){
 async function saveExp() {
   clearErrs();
   let ok = true;
-  const desc   = document.getElementById('iDesc').value.trim();
-  const amt    = parseFloat(document.getElementById('iAmt').value);
-  const date   = document.getElementById('iDate').value;
+  const desc  = document.getElementById('iDesc').value.trim();
+  const amt   = parseFloat(document.getElementById('iAmt').value);
+  const date  = document.getElementById('iDate').value;
+  const notes = document.getElementById('iNotes').value.trim();
+  const category = selectedCategory;
 
-  if (!desc)           { setErr('iDesc','eDesc','Required'); ok=false; }
-  if (!amt||amt<=0)    { setErr('iAmt','eAmt','Enter amount'); ok=false; }
-  if (!date)           { setErr('iDate','eDate','Required'); ok=false; }
-  else if (date > todayStr()) { setErr('iDate','eDate','No future dates'); ok=false; }
+  if (!desc)               { setErr('iDesc','eDesc','Required'); ok=false; }
+  if (!amt||amt<=0)        { setErr('iAmt','eAmt','Enter amount'); ok=false; }
+  if (!date)               { setErr('iDate','eDate','Required'); ok=false; }
+  else if (date>todayStr()){ setErr('iDate','eDate','No future dates'); ok=false; }
   if (!ok) return;
 
-  const nonGrocery = isNonGrocery;
   const currentEditId = editId;
   closeForm();
+
   if (currentEditId) {
     const i = exps.findIndex(e=>e.id===currentEditId);
-    if (i !== -1) exps[i] = { ...exps[i], desc, amount: amt, date, nonGrocery };
+    if (i !== -1) exps[i] = { ...exps[i], desc, amount: amt, date, category, notes };
     render();
-    await apiAction({ action:'update', id:currentEditId, desc, amount:amt, date, nonGrocery });
+    await apiAction({ action:'update', id:currentEditId, desc, amount:amt, date, category, notes });
     toast('Expense updated');
   } else {
     const id = Date.now().toString();
-    exps.push({ id, desc, amount: amt, date, nonGrocery });
+    exps.push({ id, desc, amount: amt, date, category, notes });
     render();
-    await apiAction({ action:'add', id, desc, amount:amt, date, nonGrocery });
+    await apiAction({ action:'add', id, desc, amount:amt, date, category, notes });
     toast('Expense saved');
   }
 }
@@ -737,23 +836,61 @@ function startEdit(id) {
   const e = exps.find(x=>x.id===id);
   if (!e) return;
   editId = id;
+  selectedCategory = e.category || 'Grocery';
   document.getElementById('fhd').textContent = 'Edit Expense';
   document.getElementById('iDesc').value = e.desc;
   document.getElementById('iAmt').value = e.amount;
   document.getElementById('iDate').value = e.date;
   document.getElementById('iDate').max = todayStr();
-  setCheck(e.nonGrocery);
+  document.getElementById('iNotes').value = e.notes || '';
+  renderCategoryPills();
   clearErrs();
   const fc = document.getElementById('fcard');
   fc.style.display = 'block';
   fc.scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
 
+// ── Undo delete ──
 async function delExp(id) {
-  exps = exps.filter(e=>e.id!==id);
+  // Commit any previously pending delete first
+  if (undoPending) {
+    clearTimeout(undoTimer);
+    hideUndoToast();
+    await apiAction({ action:'delete', id: undoPending.id });
+    undoPending = null;
+  }
+
+  const exp = exps.find(e => e.id === id);
+  if (!exp) return;
+  exps = exps.filter(e => e.id !== id);
   render();
-  await apiAction({ action:'delete', id });
-  toast('Expense deleted');
+
+  undoPending = exp;
+  undoTimer = setTimeout(async () => {
+    if (undoPending && undoPending.id === id) {
+      await apiAction({ action:'delete', id });
+      undoPending = null;
+    }
+    hideUndoToast();
+  }, 5000);
+  showUndoToast();
+}
+
+function undoDelete() {
+  if (!undoPending) return;
+  clearTimeout(undoTimer);
+  exps.push(undoPending);
+  undoPending = null;
+  render();
+  hideUndoToast();
+  toast('Restored!');
+}
+
+function showUndoToast() {
+  document.getElementById('undoToast').classList.add('show');
+}
+function hideUndoToast() {
+  document.getElementById('undoToast').classList.remove('show');
 }
 
 // ── Congrats banner ──
@@ -762,7 +899,6 @@ function lastSatDay(year, month) {
   while (d.getDay() !== 6) d.setDate(d.getDate()-1);
   return d.getDate();
 }
-
 function renderCongrats(left) {
   const banner = document.getElementById('congratsBanner');
   const now = new Date();
@@ -770,30 +906,24 @@ function renderCongrats(left) {
   const isPastMonth = viewYear < now.getFullYear() || (viewYear === now.getFullYear() && viewMonth < now.getMonth());
   const lastSat = lastSatDay(viewYear, viewMonth);
   const isLastWeek = isCurrentMonth && now.getDate() >= lastSat;
-
   if ((isLastWeek || isPastMonth) && left > 0) {
-    document.getElementById('congratsTitle').textContent =
-      `Great job! You saved $${left.toFixed(0)} this month! 🌟`;
+    document.getElementById('congratsTitle').textContent = `Great job! You saved $${left.toFixed(0)} this month! 🌟`;
     banner.style.display = 'flex';
   } else {
     banner.style.display = 'none';
   }
 }
-
 function dismissCongrats() {
   document.getElementById('congratsBanner').style.display = 'none';
 }
 
 // ── Budget form ──
 function openBudgetForm() {
-  const card = document.getElementById('budgetCard');
   document.getElementById('iBudget').value = getBudget() || '';
-  card.style.display = 'flex';
+  document.getElementById('budgetCard').style.display = 'flex';
   setTimeout(() => document.getElementById('iBudget').focus(), 80);
 }
-function closeBudgetForm() {
-  document.getElementById('budgetCard').style.display = 'none';
-}
+function closeBudgetForm() { document.getElementById('budgetCard').style.display = 'none'; }
 function saveBudget() {
   const val = parseFloat(document.getElementById('iBudget').value);
   if (!val || val <= 0) return;
