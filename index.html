@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Expense Manager</title>
+  <script src="https://accounts.google.com/gsi/client"></script>
   <style>
     :root {
       --bg: #f0f9ff;
@@ -27,15 +28,42 @@
       margin: 0 auto;
     }
 
+    /* ── Login Screen ── */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%);
+      padding: 24px;
+    }
+    .login-card {
+      background: white;
+      border-radius: 24px;
+      padding: 40px 28px;
+      text-align: center;
+      width: 100%;
+      max-width: 320px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+    .login-icon { font-size: 52px; margin-bottom: 14px; }
+    .login-title { font-size: 24px; font-weight: 800; color: #075985; margin-bottom: 8px; }
+    .login-sub { font-size: 13px; color: #64748b; margin-bottom: 32px; line-height: 1.6; }
+    .login-btn-wrap { display: flex; justify-content: center; }
+
     /* ── Header ── */
     .hdr {
       background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%);
       padding: 22px 16px 18px;
       color: white;
     }
-    .hdr-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .hdr-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
     .hdr-title { font-size: 18px; font-weight: 800; }
+    .hdr-right { text-align: right; }
     .hdr-month { font-size: 12px; font-weight: 600; opacity: 0.95; }
+    .hdr-user { display: flex; align-items: center; gap: 6px; justify-content: flex-end; margin-top: 4px; }
+    .hdr-uname { font-size: 10px; opacity: 0.85; }
+    .signout-btn { font-size: 9px; background: rgba(255,255,255,0.22); color: white; border: none; border-radius: 100px; padding: 3px 9px; cursor: pointer; }
     .brow { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr; align-items: center; margin-bottom: 14px; }
     .bitem { text-align: center; }
     .blabel { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.7px; }
@@ -202,11 +230,30 @@
 </head>
 <body>
 
-<div id="mainApp">
+<!-- ── Login Screen ── -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-icon">💰</div>
+    <div class="login-title">Expense Manager</div>
+    <div class="login-sub">Track your monthly expenses.<br>Sign in with your Google account to get started.</div>
+    <div class="login-btn-wrap">
+      <div id="gSignInBtn"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Main App ── -->
+<div id="mainApp" style="display:none">
   <div class="hdr">
     <div class="hdr-top">
       <div class="hdr-title">Expense Manager</div>
-      <div class="hdr-month" id="hMonth"></div>
+      <div class="hdr-right">
+        <div class="hdr-month" id="hMonth"></div>
+        <div class="hdr-user">
+          <span class="hdr-uname" id="userName"></span>
+          <button class="signout-btn" onclick="signOut()">Sign out</button>
+        </div>
+      </div>
     </div>
     <div class="brow">
       <div class="bitem editable" onclick="openBudgetForm()">
@@ -285,21 +332,57 @@
 
     <div class="stitle">Transactions</div>
     <div id="txArea">
-
       <div class="loading"><div class="spinner"></div>Loading...</div>
     </div>
   </div>
-
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
+const CLIENT_ID = '941564315246-inm05c2lv8ohggc3pa0nt7838vkd1d1i.apps.googleusercontent.com';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyTf5AVEXuViksmXbsgP03b5qqG48hDJ2oxJlxx_GFF68VBXVq-ghAhfCZ9Nm9foH-35Q/exec';
 const CIRC = 2 * Math.PI * 21;
 
-// ── Budget (per month) ──
+// ── Auth state ──
+let gCredential = null;
+let gUserEmail = null;
+let gUserName = null;
+
+function handleCredentialResponse(response) {
+  gCredential = response.credential;
+  const payload = JSON.parse(atob(gCredential.split('.')[1]));
+  gUserEmail = payload.email;
+  gUserName = payload.given_name || payload.name.split(' ')[0];
+  scheduleTokenRefresh(payload.exp);
+
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+  document.getElementById('userName').textContent = gUserName;
+
+  loadFromSheet();
+}
+
+function signOut() {
+  google.accounts.id.disableAutoSelect();
+  gCredential = null;
+  gUserEmail = null;
+  gUserName = null;
+  exps = [];
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function scheduleTokenRefresh(exp) {
+  const msUntilRefresh = exp * 1000 - Date.now() - 60000;
+  if (msUntilRefresh > 0) {
+    setTimeout(() => google.accounts.id.prompt(), msUntilRefresh);
+  }
+}
+
+// ── Budget (per user, per month) ──
 function budgetKey() {
-  return `em_budget_${viewYear}_${pad(viewMonth+1)}`;
+  return `em_budget_${gUserEmail}_${viewYear}_${pad(viewMonth+1)}`;
 }
 function getBudget() {
   const defaultBudget = numWeeks(viewYear, viewMonth) === 5 ? 700 : 600;
@@ -310,21 +393,20 @@ function numWeeks(year, month) {
   const fs = firstSatDay(year, month);
   let count = 0;
   for (let d = fs; d <= daysInMonth; d += 7) count++;
-  return count; // pre-Saturday days belong to week 1, not a separate week
+  return count;
 }
 function weekCap() {
   const nw = numWeeks(viewYear, viewMonth);
   return nw > 0 ? getBudget() / nw : 0;
 }
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyTf5AVEXuViksmXbsgP03b5qqG48hDJ2oxJlxx_GFF68VBXVq-ghAhfCZ9Nm9foH-35Q/exec';
 
 let exps = [];
 let editId = null;
 let isNonGrocery = false;
 
 // ── Month navigation ──
-const MIN_YEAR = 2026, MIN_MONTH = 0;  // Jan 2026
-const MAX_YEAR = 2030, MAX_MONTH = 11; // Dec 2030
+const MIN_YEAR = 2026, MIN_MONTH = 0;
+const MAX_YEAR = 2030, MAX_MONTH = 11;
 const _now = new Date();
 let viewYear = _now.getFullYear(), viewMonth = _now.getMonth();
 
@@ -336,10 +418,7 @@ function changeMonth(dir) {
   if (y > MAX_YEAR || (y === MAX_YEAR && m > MAX_MONTH)) return;
   viewYear = y; viewMonth = m;
   render();
-  updateNavButtons();
 }
-
-function updateNavButtons() {}
 
 // ── Swipe to change month ──
 let swipeStartX = null;
@@ -349,19 +428,37 @@ document.addEventListener('touchend', e => {
   const dx = e.changedTouches[0].clientX - swipeStartX;
   swipeStartX = null;
   if (Math.abs(dx) < 50) return;
-  changeMonth(dx < 0 ? 1 : -1); // swipe left = next, swipe right = prev
+  changeMonth(dx < 0 ? 1 : -1);
 }, { passive: true });
 
 // ── Boot ──
-window.addEventListener('DOMContentLoaded', () => { updateNavButtons(); loadFromSheet(); });
+window.addEventListener('DOMContentLoaded', () => {
+  google.accounts.id.initialize({
+    client_id: CLIENT_ID,
+    callback: handleCredentialResponse,
+    auto_select: true
+  });
+  google.accounts.id.renderButton(
+    document.getElementById('gSignInBtn'),
+    { theme: 'outline', size: 'large', width: 240, text: 'signin_with' }
+  );
+  google.accounts.id.prompt();
+});
 
 // ── API ──
 function api(params) {
-  const qs = Object.entries(params)
+  const qs = Object.entries({ ...params, token: gCredential })
     .map(([k,v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
     .join('&');
   return fetch(`${SCRIPT_URL}?${qs}`)
-    .then(r => r.json());
+    .then(r => r.json())
+    .then(data => {
+      if (data.error && data.error.includes('authenticated')) {
+        signOut();
+        throw new Error(data.error);
+      }
+      return data;
+    });
 }
 
 function loadFromSheet() {
@@ -415,8 +512,8 @@ function weekOf(dateStr, year, month) {
   if (y !== year || m-1 !== month) return null;
   const fs = firstSatDay(year, month);
   const nw = numWeeks(year, month);
-  if (d < fs) return 1; // pre-Saturday days → week 1
-  return Math.min(Math.floor((d-fs)/7)+1, nw); // first Saturday = week 1
+  if (d < fs) return 1;
+  return Math.min(Math.floor((d-fs)/7)+1, nw);
 }
 function curWeek() {
   const n = new Date();
@@ -496,7 +593,7 @@ function getWeekRange(w, year, month) {
   let s, e;
   if (w === 1) {
     s = 1;
-    e = Math.min(fs+6, daysInMonth); // day 1 through end of first Sat-Fri week
+    e = Math.min(fs+6, daysInMonth);
   } else {
     s = fs + (w-1)*7;
     e = Math.min(s+6, daysInMonth);
@@ -513,7 +610,6 @@ function renderTxs() {
     return;
   }
 
-  // Group by week
   const groups = {};
   cur.forEach(e => {
     const w = weekOf(e.date,y,m) || 1;
