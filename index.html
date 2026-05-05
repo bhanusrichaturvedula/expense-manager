@@ -206,6 +206,31 @@
     .saving-box { background: white; border-radius: 14px; padding: 20px 28px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
     .saving-box .spinner { margin-bottom: 10px; }
     .saving-label { font-size: 13px; font-weight: 600; color: var(--b1); }
+
+    /* ── Online Orders Page ── */
+    #onlineApp { min-height: 100vh; background: var(--bg); }
+    .ol-hdr { background: linear-gradient(155deg, #6d28d9 0%, #7c3aed 40%, #8b5cf6 75%, #a78bfa 100%); padding: 22px 16px 18px; color: white; }
+    .ol-hdr-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .ol-back-btn { background: rgba(255,255,255,0.22); color: white; border: none; border-radius: 100px; padding: 5px 13px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .ol-hdr-title { font-size: 17px; font-weight: 800; }
+    .ol-month-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 14px; }
+    .ol-nav-btn { background: rgba(255,255,255,0.22); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+    .ol-month-lbl { font-size: 15px; font-weight: 800; min-width: 130px; text-align: center; }
+    .ol-stats-row { display: flex; align-items: center; background: rgba(255,255,255,0.15); border-radius: 12px; padding: 10px 0; }
+    .ol-stat-item { flex: 1; text-align: center; }
+    .ol-stat-lbl { font-size: 10px; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.7px; }
+    .ol-stat-val { font-size: 20px; font-weight: 800; margin-top: 3px; }
+    .ol-stat-div { width: 1px; background: rgba(255,255,255,0.3); height: 32px; }
+    .ol-body { padding: 14px 12px 90px; }
+    .ol-order { background: white; border-radius: 12px; padding: 12px 14px; border: 1px solid var(--border); margin-bottom: 9px; }
+    .ol-order-top { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .ol-store-badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+    .ol-order-desc { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ol-order-bottom { display: flex; align-items: center; justify-content: space-between; }
+    .ol-order-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .ol-order-date { font-size: 11px; color: #94a3b8; }
+    .ol-order-amt { font-size: 15px; font-weight: 800; color: var(--text); flex-shrink: 0; }
+    .ol-orders-btn { background: linear-gradient(135deg, #7c3aed, #a78bfa); color: white; border: none; border-radius: 100px; padding: 4px 10px; font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -252,7 +277,10 @@
 <div id="mainApp" style="display:none">
   <div class="hdr">
     <div class="hdr-top">
-      <div class="hdr-title">Expense Manager</div>
+      <div>
+        <div class="hdr-title">Expense Manager</div>
+        <button class="ol-orders-btn" onclick="openOnlineOrders()" style="margin-top:6px">📦 Online Orders</button>
+      </div>
       <div class="hdr-right">
         <div class="hdr-month" id="hMonth"></div>
         <div class="hdr-user">
@@ -353,6 +381,7 @@
           <option value="BOFA">Bank of America</option>
           <option value="Cash">Cash</option>
           <option value="Other">Other</option>
+          <option value="Amazon Account Bal">Amazon Account Bal</option>
         </select>
       </div>
       <div class="fbts">
@@ -362,6 +391,36 @@
     </div>
     <div class="stitle">Transactions</div>
     <div id="txArea"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+  </div>
+</div>
+
+<!-- ── Online Orders Page ── -->
+<div id="onlineApp" style="display:none">
+  <div class="ol-hdr">
+    <div class="ol-hdr-top">
+      <button class="ol-back-btn" onclick="closeOnlineOrders()">‹ Back</button>
+      <div class="ol-hdr-title">📦 Online Orders</div>
+      <div style="width:64px"></div>
+    </div>
+    <div class="ol-month-row">
+      <button class="ol-nav-btn" onclick="changeOnlineMonth(-1)">‹</button>
+      <span class="ol-month-lbl" id="olMonth"></span>
+      <button class="ol-nav-btn" onclick="changeOnlineMonth(1)">›</button>
+    </div>
+    <div class="ol-stats-row">
+      <div class="ol-stat-item">
+        <div class="ol-stat-lbl">Orders</div>
+        <div class="ol-stat-val" id="olCount">0</div>
+      </div>
+      <div class="ol-stat-div"></div>
+      <div class="ol-stat-item">
+        <div class="ol-stat-lbl">Total</div>
+        <div class="ol-stat-val" id="olTotal">$0.00</div>
+      </div>
+    </div>
+  </div>
+  <div class="ol-body" id="olArea">
+    <div class="loading"><div class="spinner"></div>Loading...</div>
   </div>
 </div>
 
@@ -471,10 +530,18 @@ function getWeekCap(w) {
 let editingWeek = null;
 
 const CARD_COLORS = {
-  'Chase': { color: '#1e40af', bg: '#dbeafe' },
-  'BOFA':  { color: '#dc2626', bg: '#fee2e2' },
-  'Cash':  { color: '#059669', bg: '#d1fae5' },
-  'Other': { color: '#475569', bg: '#f1f5f9' },
+  'Chase':             { color: '#1e40af', bg: '#dbeafe' },
+  'BOFA':              { color: '#dc2626', bg: '#fee2e2' },
+  'Cash':              { color: '#059669', bg: '#d1fae5' },
+  'Other':             { color: '#475569', bg: '#f1f5f9' },
+  'Amazon Account Bal':{ color: '#92400e', bg: '#fef3c7' },
+};
+
+const STORE_COLORS = {
+  'Amazon':  { color: '#92400e', bg: '#fef3c7' },
+  'Walmart': { color: '#1e40af', bg: '#dbeafe' },
+  'Target':  { color: '#991b1b', bg: '#fee2e2' },
+  'Costco':  { color: '#1e3a8a', bg: '#e0f2fe' },
 };
 
 function setSplit(mode) {
@@ -1048,6 +1115,88 @@ function showSaving(on) {
     div.innerHTML = '<div class="saving-box"><div class="spinner"></div><div class="saving-label">Saving...</div></div>';
     document.body.appendChild(div);
   } else if (!on && ex) { ex.remove(); }
+}
+
+// ── Online Orders ──
+let onlineOrders = [];
+let onlineViewYear = _now.getFullYear(), onlineViewMonth = _now.getMonth();
+
+function openOnlineOrders() {
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('onlineApp').style.display = 'block';
+  onlineViewYear = _now.getFullYear(); onlineViewMonth = _now.getMonth();
+  loadOnlineOrders();
+}
+
+function closeOnlineOrders() {
+  document.getElementById('onlineApp').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+}
+
+function changeOnlineMonth(dir) {
+  let y = onlineViewYear, m = onlineViewMonth + dir;
+  if (m < 0)  { y--; m = 11; }
+  if (m > 11) { y++; m = 0;  }
+  if (y < MIN_YEAR || (y === MIN_YEAR && m < MIN_MONTH)) return;
+  if (y > MAX_YEAR || (y === MAX_YEAR && m > MAX_MONTH)) return;
+  onlineViewYear = y; onlineViewMonth = m;
+  renderOnlineOrders();
+}
+
+function loadOnlineOrders() {
+  document.getElementById('olArea').innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>';
+  renderOnlineHeader([]);
+  api({ action: 'listOnline' })
+    .then(data => {
+      onlineOrders = data.map(o => ({ ...o, amount: Number(o.amount) }));
+      renderOnlineOrders();
+    })
+    .catch(err => {
+      document.getElementById('olArea').innerHTML =
+        `<div class="empty"><div class="eicon">⚠️</div>Could not load orders.<div style="font-size:11px;color:#94a3b8;margin-top:8px;word-break:break-all">${err.message}</div><br><button onclick="loadOnlineOrders()" style="margin-top:12px;padding:8px 18px;background:#7c3aed;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Retry</button></div>`;
+    });
+}
+
+function renderOnlineHeader(monthOrders) {
+  const c = curr();
+  document.getElementById('olMonth').textContent = new Date(onlineViewYear, onlineViewMonth, 1)
+    .toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  document.getElementById('olCount').textContent = monthOrders.length;
+  const total = monthOrders.reduce((s, o) => s + o.amount, 0);
+  document.getElementById('olTotal').textContent = `${c}${total.toFixed(2)}`;
+}
+
+function renderOnlineOrders() {
+  const c = curr();
+  const prefix = `${onlineViewYear}-${pad(onlineViewMonth + 1)}`;
+  const monthOrders = onlineOrders
+    .filter(o => o.date && o.date.startsWith(prefix))
+    .sort((a, b) => b.date.localeCompare(a.date));
+  renderOnlineHeader(monthOrders);
+  const area = document.getElementById('olArea');
+  if (!monthOrders.length) {
+    area.innerHTML = '<div class="empty"><div class="eicon">📦</div>No online orders this month</div>';
+    return;
+  }
+  area.innerHTML = monthOrders.map(o => {
+    const sc = STORE_COLORS[o.store] || { color: '#475569', bg: '#f1f5f9' };
+    const cc = o.card ? (CARD_COLORS[o.card] || CARD_COLORS['Other']) : null;
+    const cardBadge = cc ? `<span class="cat-badge" style="background:${cc.bg};color:${cc.color}">💳 ${o.card}</span>` : '';
+    return `<div class="ol-order">
+      <div class="ol-order-top">
+        <span class="ol-store-badge" style="background:${sc.bg};color:${sc.color}">${o.store || 'Online'}</span>
+        <span class="ol-order-desc">${o.desc}</span>
+      </div>
+      <div class="ol-order-bottom">
+        <div class="ol-order-meta">
+          ${cardBadge}
+          <span class="ol-order-date">${fmtDate(o.date)}</span>
+        </div>
+        <span class="ol-order-amt">${c}${o.amount.toFixed(2)}</span>
+      </div>
+      ${o.notes ? `<div class="txnotes" style="margin-top:5px">${o.notes}</div>` : ''}
+    </div>`;
+  }).join('');
 }
 </script>
 </body>
