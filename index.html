@@ -28,34 +28,32 @@
     .login-title { font-size: 24px; font-weight: 800; color: #075985; margin-bottom: 8px; }
     .login-sub { font-size: 13px; color: #64748b; margin-bottom: 32px; line-height: 1.6; }
     .login-btn-wrap { display: flex; justify-content: center; }
-    .login-divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; color: #94a3b8; font-size: 12px; }
-    .login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+    .login-error { font-size: 12px; color: #dc2626; background: #fee2e2; border-radius: 8px; padding: 10px 14px; margin-top: 16px; display: none; font-weight: 600; }
 
-    /* ── Setup / Settings ── */
-    #setupScreen { position: fixed; inset: 0; display: flex; align-items: flex-start; justify-content: center; background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%); padding: 20px; z-index: 200; overflow-y: auto; }
-    .setup-card { background: white; border-radius: 24px; padding: 30px 24px; width: 100%; max-width: 360px; box-shadow: 0 12px 40px rgba(0,0,0,0.2); margin: auto; }
-    .setup-icon { font-size: 40px; text-align: center; margin-bottom: 10px; }
-    .setup-title { font-size: 20px; font-weight: 800; color: #075985; text-align: center; margin-bottom: 4px; }
-    .setup-sub { font-size: 13px; color: #64748b; text-align: center; margin-bottom: 24px; line-height: 1.5; }
-    .setup-label { display: block; font-size: 10px; font-weight: 700; color: var(--b2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .setup-input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 16px; color: var(--text); background: var(--bg); outline: none; margin-bottom: 20px; }
-    .setup-input:focus { border-color: var(--b3); background: white; }
-    .setup-input.err { border-color: var(--red); }
-    .setup-pills { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 20px; }
-    .setup-pill { padding: 7px 14px; border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: var(--muted); transition: all 0.15s; white-space: nowrap; }
-    .setup-pill.active { background: #dbeafe; border-color: var(--b2); color: var(--b1); }
-    .setup-start { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--b1), var(--b3)); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px; }
-    .setup-cancel { width: 100%; padding: 12px; background: #f1f5f9; color: var(--muted); border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+    /* ── Settings Panel (bottom sheet) ── */
+    .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: flex-end; justify-content: center; z-index: 200; }
+    .settings-card { background: white; border-radius: 20px 20px 0 0; padding: 24px 20px 44px; width: 100%; max-width: 430px; max-height: 88vh; overflow-y: auto; }
+    .settings-hd { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+    .settings-hd-title { font-size: 17px; font-weight: 800; color: var(--text); }
+    .settings-close { background: #f1f5f9; border: none; border-radius: 8px; padding: 6px 11px; font-size: 15px; cursor: pointer; color: var(--muted); }
+    .settings-label { display: block; font-size: 10px; font-weight: 700; color: var(--b2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; margin-top: 18px; }
+    .settings-pills { display: flex; gap: 7px; flex-wrap: wrap; }
+    .settings-pill { padding: 7px 14px; border-radius: 100px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1.5px solid #e2e8f0; background: #f8fafc; color: var(--muted); transition: all 0.15s; white-space: nowrap; }
+    .settings-pill.active { background: #dbeafe; border-color: var(--b2); color: var(--b1); }
+    .settings-budget-row { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+    .settings-budget-input { flex: 1; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 15px; color: var(--text); background: var(--bg); outline: none; }
+    .settings-budget-input:focus { border-color: var(--b3); background: white; }
+    .settings-save { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--b1), var(--b3)); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 22px; }
 
-    /* ── Category Manager (in settings) ── */
-    .cat-mgr { margin-bottom: 6px; }
+    /* ── Category Manager ── */
+    .cat-mgr { margin-bottom: 4px; }
     .cat-mgr-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
     .cat-mgr-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
     .cat-mgr-name { flex: 1; font-size: 13px; font-weight: 600; color: var(--text); }
     .cat-mgr-del { background: none; border: none; cursor: pointer; color: #94a3b8; font-size: 15px; padding: 3px 6px; border-radius: 5px; }
     .cat-mgr-del:active { background: #fee2e2; color: var(--red); }
-    .cat-add-btn { width: 100%; padding: 9px; background: none; border: 1.5px dashed var(--border); border-radius: 8px; color: var(--b2); font-size: 13px; font-weight: 600; cursor: pointer; margin: 8px 0 20px; }
-    .cat-add-form { background: #f8fafc; border-radius: 10px; padding: 12px; margin: 8px 0 20px; }
+    .cat-add-btn { width: 100%; padding: 9px; background: none; border: 1.5px dashed var(--border); border-radius: 8px; color: var(--b2); font-size: 13px; font-weight: 600; cursor: pointer; margin: 8px 0 4px; }
+    .cat-add-form { background: #f8fafc; border-radius: 10px; padding: 12px; margin: 8px 0 4px; }
     .cat-add-input { width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: white; outline: none; margin-bottom: 10px; }
     .cat-add-input:focus { border-color: var(--b3); }
     .color-swatches { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -217,35 +215,36 @@
   <div class="login-card">
     <div class="login-icon">💰</div>
     <div class="login-title">Expense Manager</div>
-    <div class="login-sub">New here? Create your free account.<br>Your data is private and secure.</div>
-    <div class="login-btn-wrap"><div id="gSignUpBtn"></div></div>
-    <div class="login-divider">Already have an account?</div>
+    <div class="login-sub">Family expense tracker.<br>Sign in with your Google account.</div>
     <div class="login-btn-wrap"><div id="gSignInBtn"></div></div>
+    <div class="login-error" id="loginError">Access denied. This app is private.</div>
   </div>
 </div>
 
-<!-- ── Setup / Settings ── -->
-<div id="setupScreen" style="display:none">
-  <div class="setup-card">
-    <div class="setup-icon">⚙️</div>
-    <div class="setup-title" id="setupTitle">Welcome!</div>
-    <div class="setup-sub" id="setupSub">Let's set up your Expense Manager</div>
+<!-- ── Settings Panel (bottom sheet) ── -->
+<div class="settings-overlay" id="settingsPanel" style="display:none">
+  <div class="settings-card">
+    <div class="settings-hd">
+      <span class="settings-hd-title">⚙️ Settings</span>
+      <button class="settings-close" onclick="closeSettings()">✕</button>
+    </div>
 
-    <label class="setup-label">Default Monthly Budget</label>
-    <input id="sBudget" class="setup-input" type="number" placeholder="e.g. 500" min="1" inputmode="decimal">
+    <label class="settings-label">Default Monthly Budget</label>
+    <div class="settings-budget-row">
+      <input id="sDefaultBudget" class="settings-budget-input" type="number" placeholder="e.g. 500" min="1" inputmode="decimal">
+    </div>
 
-    <label class="setup-label">Currency</label>
-    <div class="setup-pills" id="currencyPills"></div>
+    <label class="settings-label">Currency</label>
+    <div class="settings-pills" id="sCurrencyPills"></div>
 
-    <label class="setup-label">Week Starts On</label>
-    <div class="setup-pills" id="weekStartPills"></div>
+    <label class="settings-label">Week Starts On</label>
+    <div class="settings-pills" id="sWeekStartPills"></div>
 
-    <label class="setup-label">Your Categories</label>
+    <label class="settings-label">Your Categories</label>
     <div class="cat-mgr" id="catMgr"></div>
     <div id="catAddArea"></div>
 
-    <button class="setup-start" id="setupStartBtn" onclick="saveSetup()">Get Started →</button>
-    <button class="setup-cancel" id="setupCancelBtn" style="display:none" onclick="closeSetup()">Cancel</button>
+    <button class="settings-save" onclick="saveSettings()">Save Settings</button>
   </div>
 </div>
 
@@ -258,7 +257,7 @@
         <div class="hdr-month" id="hMonth"></div>
         <div class="hdr-user">
           <span class="hdr-uname" id="userName"></span>
-          <button class="hdr-btn" onclick="openSetup('settings')">⚙️</button>
+          <button class="hdr-btn" onclick="openSettings()">⚙️</button>
           <button class="hdr-btn" onclick="signOut()">Sign out</button>
         </div>
       </div>
@@ -390,12 +389,14 @@ const CLIENT_ID  = '941564315246-inm05c2lv8ohggc3pa0nt7838vkd1d1i.apps.googleuse
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyTf5AVEXuViksmXbsgP03b5qqG48hDJ2oxJlxx_GFF68VBXVq-ghAhfCZ9Nm9foH-35Q/exec';
 const CIRC = 2 * Math.PI * 21;
 
+// Only these two emails can log in
+const ALLOWED_EMAILS = ['bhanusri.chaturvedula@gmail.com', 'seshumadhav@gmail.com'];
+
 // ── Dynamic date range ──
 const _nowYear = new Date().getFullYear();
 const MIN_YEAR = _nowYear - 5, MIN_MONTH = 0;
 const MAX_YEAR = _nowYear + 5, MAX_MONTH = 11;
 
-// ── Default categories ──
 const DEFAULT_CATEGORIES = [
   { name: 'Grocery',       color: '#059669', bg: '#d1fae5' },
   { name: 'Restaurant',    color: '#ea580c', bg: '#ffedd5' },
@@ -439,8 +440,8 @@ const WEEK_STARTS = [
 // ── Auth ──
 let gCredential = null, gUserEmail = null, gUserName = null;
 
-// ── Setup state ──
-let setupCurrency = '$', setupWeekStart = 0, setupMode = 'onboarding';
+// ── Settings panel state ──
+let settingsCurrency = '$', settingsWeekStart = 0;
 let addCatFormOpen = false, selectedColorIdx = 0;
 
 // ── Settings helpers ──
@@ -506,42 +507,51 @@ function resetWeekBudget() {
 
 // ── Auth flow ──
 async function handleCredentialResponse(response) {
-  gCredential = response.credential;
-  const payload = JSON.parse(atob(gCredential.split('.')[1]));
-  gUserEmail = payload.email;
-  gUserName  = payload.given_name || payload.name.split(' ')[0];
-  scheduleTokenRefresh(payload.exp);
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('userName').textContent = gUserName;
+  const payload = JSON.parse(atob(response.credential.split('.')[1]));
+  const email   = payload.email;
 
-  // Show app shell with loading state while we fetch their saved settings
+  // Block anyone not on the allowed list
+  if (!ALLOWED_EMAILS.includes(email)) {
+    const err = document.getElementById('loginError');
+    err.style.display = 'block';
+    google.accounts.id.disableAutoSelect();
+    return;
+  }
+
+  gCredential = response.credential;
+  gUserEmail  = email;
+  gUserName   = payload.given_name || payload.name.split(' ')[0];
+  scheduleTokenRefresh(payload.exp);
+
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('loginError').style.display  = 'none';
+  document.getElementById('userName').textContent = gUserName;
   document.getElementById('mainApp').style.display = 'block';
-  document.getElementById('txArea').innerHTML = '<div class="loading"><div class="spinner"></div>Loading your account...</div>';
+  document.getElementById('txArea').innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>';
 
   try {
     const data = await api({ action: 'getSettings' });
     if (data.settings) {
-      // Returning user — restore settings silently, go straight to their data
       saveUserSettings(data.settings);
       if (data.categories) saveCategories(data.categories);
-      loadFromSheet();
+    } else if (getUserSettings()) {
+      syncSettingsToSheet();
     } else {
-      // New user — show one-time onboarding
-      document.getElementById('mainApp').style.display = 'none';
-      openSetup('onboarding');
+      // First-time user — apply defaults and save
+      saveUserSettings({ currency: '$', weekStart: 0, defaultBudget: 500 });
+      syncSettingsToSheet();
     }
   } catch(e) {
-    // Offline fallback — use localStorage if available
-    if (!getUserSettings()) { document.getElementById('mainApp').style.display = 'none'; openSetup('onboarding'); }
-    else loadFromSheet();
+    if (!getUserSettings()) saveUserSettings({ currency: '$', weekStart: 0, defaultBudget: 500 });
   }
+
+  loadFromSheet();
 }
 
 function signOut() {
   google.accounts.id.disableAutoSelect();
   gCredential = null; gUserEmail = null; gUserName = null; exps = [];
   document.getElementById('mainApp').style.display = 'none';
-  document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'flex';
 }
 
@@ -550,39 +560,31 @@ function scheduleTokenRefresh(exp) {
   if (ms > 0) setTimeout(() => google.accounts.id.prompt(), ms);
 }
 
-// ── Setup / Settings screen ──
-function openSetup(mode) {
-  setupMode = mode;
-  const s = getUserSettings();
-  setupCurrency  = s ? s.currency  : '$';
-  setupWeekStart = s ? s.weekStart : 0;
-  addCatFormOpen = false;
-
-  document.getElementById('sBudget').value = s ? s.defaultBudget : '';
-  document.getElementById('sBudget').classList.remove('err');
-  document.getElementById('setupTitle').textContent    = mode === 'settings' ? 'Settings' : 'Welcome! 👋';
-  document.getElementById('setupSub').textContent      = mode === 'settings' ? 'Update your preferences' : "Let's set up your Expense Manager";
-  document.getElementById('setupStartBtn').textContent = mode === 'settings' ? 'Save Settings' : 'Get Started →';
-  document.getElementById('setupCancelBtn').style.display = mode === 'settings' ? 'block' : 'none';
-
-  renderSetupPills();
+// ── Settings panel ──
+function openSettings() {
+  const s = getUserSettings() || { currency: '$', weekStart: 0, defaultBudget: 500 };
+  settingsCurrency  = s.currency;
+  settingsWeekStart = s.weekStart;
+  addCatFormOpen    = false;
+  document.getElementById('sDefaultBudget').value = s.defaultBudget || '';
+  renderSettingsPills();
   renderCategoryManager();
-  document.getElementById('setupScreen').style.display = 'flex';
+  document.getElementById('settingsPanel').style.display = 'flex';
 }
 
-function closeSetup() { document.getElementById('setupScreen').style.display = 'none'; }
+function closeSettings() { document.getElementById('settingsPanel').style.display = 'none'; }
 
-function renderSetupPills() {
-  document.getElementById('currencyPills').innerHTML = CURRENCIES.map(c =>
-    `<div class="setup-pill${setupCurrency===c.symbol?' active':''}" onclick="pickCurrency('${c.symbol}')">${c.label}</div>`
+function renderSettingsPills() {
+  document.getElementById('sCurrencyPills').innerHTML = CURRENCIES.map(c =>
+    `<div class="settings-pill${settingsCurrency===c.symbol?' active':''}" onclick="pickCurrency('${c.symbol}')">${c.label}</div>`
   ).join('');
-  document.getElementById('weekStartPills').innerHTML = WEEK_STARTS.map(w =>
-    `<div class="setup-pill${setupWeekStart===w.value?' active':''}" onclick="pickWeekStart(${w.value})">${w.label}</div>`
+  document.getElementById('sWeekStartPills').innerHTML = WEEK_STARTS.map(w =>
+    `<div class="settings-pill${settingsWeekStart===w.value?' active':''}" onclick="pickWeekStart(${w.value})">${w.label}</div>`
   ).join('');
 }
 
-function pickCurrency(s)  { setupCurrency  = s; renderSetupPills(); }
-function pickWeekStart(v) { setupWeekStart = v; renderSetupPills(); }
+function pickCurrency(s)  { settingsCurrency  = s; renderSettingsPills(); }
+function pickWeekStart(v) { settingsWeekStart = v; renderSettingsPills(); }
 
 function renderCategoryManager() {
   const cats = getCategories();
@@ -595,16 +597,13 @@ function renderCategoryManager() {
         : '<span style="font-size:10px;color:#94a3b8">default</span>'}
     </div>`
   ).join('');
-
   const addArea = document.getElementById('catAddArea');
   if (addCatFormOpen) {
     addArea.innerHTML = `
       <div class="cat-add-form">
         <input id="iCatName" class="cat-add-input" type="text" placeholder="Category name..." maxlength="20" autocomplete="off">
         <div class="color-swatches">${COLOR_OPTIONS.map((c,i) =>
-          `<div class="color-swatch${selectedColorIdx===i?' active':''}"
-            style="background:${c.color}"
-            onclick="pickColor(${i})"></div>`
+          `<div class="color-swatch${selectedColorIdx===i?' active':''}" style="background:${c.color}" onclick="pickColor(${i})"></div>`
         ).join('')}</div>
         <div class="cat-add-btns">
           <button class="cat-add-cancel-btn" onclick="closeCatForm()">Cancel</button>
@@ -625,11 +624,9 @@ function addCategory() {
   const name = nameEl ? nameEl.value.trim() : '';
   if (!name) { if (nameEl) nameEl.style.borderColor = 'var(--red)'; return; }
   const cats = getCategories();
-  if (cats.find(c => c.name.toLowerCase() === name.toLowerCase())) {
-    if (nameEl) nameEl.style.borderColor = 'var(--red)'; return;
-  }
+  if (cats.find(c => c.name.toLowerCase() === name.toLowerCase())) { if (nameEl) nameEl.style.borderColor = 'var(--red)'; return; }
   const col = COLOR_OPTIONS[selectedColorIdx];
-  cats.splice(cats.length - 1, 0, { name, color: col.color, bg: col.bg }); // insert before Other
+  cats.splice(cats.length - 1, 0, { name, color: col.color, bg: col.bg });
   saveCategories(cats);
   syncSettingsToSheet();
   addCatFormOpen = false;
@@ -638,24 +635,18 @@ function addCategory() {
 
 function deleteCategory(name) {
   if (name === 'Other') return;
-  let cats = getCategories().filter(c => c.name !== name);
-  saveCategories(cats);
+  saveCategories(getCategories().filter(c => c.name !== name));
   syncSettingsToSheet();
   renderCategoryManager();
 }
 
-function saveSetup() {
-  const budget = parseFloat(document.getElementById('sBudget').value);
-  if (!budget || budget <= 0) { document.getElementById('sBudget').classList.add('err'); return; }
-  saveUserSettings({ currency: setupCurrency, weekStart: setupWeekStart, defaultBudget: budget });
+function saveSettings() {
+  const budget = parseFloat(document.getElementById('sDefaultBudget').value);
+  if (!budget || budget <= 0) { document.getElementById('sDefaultBudget').style.borderColor = 'var(--red)'; return; }
+  saveUserSettings({ currency: settingsCurrency, weekStart: settingsWeekStart, defaultBudget: budget });
   syncSettingsToSheet();
-  closeSetup();
-  if (setupMode === 'onboarding') {
-    document.getElementById('mainApp').style.display = 'block';
-    loadFromSheet();
-  } else {
-    render(); toast('Settings saved');
-  }
+  closeSettings();
+  render(); toast('Settings saved');
 }
 
 function syncSettingsToSheet() {
@@ -715,8 +706,7 @@ document.addEventListener('touchend', e => {
 // ── Boot ──
 window.addEventListener('DOMContentLoaded', () => {
   google.accounts.id.initialize({ client_id: CLIENT_ID, callback: handleCredentialResponse, auto_select: true });
-  google.accounts.id.renderButton(document.getElementById('gSignUpBtn'), { theme: 'filled_blue', size: 'large', width: 240, text: 'signup_with' });
-  google.accounts.id.renderButton(document.getElementById('gSignInBtn'), { theme: 'outline',     size: 'large', width: 240, text: 'signin_with' });
+  google.accounts.id.renderButton(document.getElementById('gSignInBtn'), { theme: 'outline', size: 'large', width: 240, text: 'signin_with' });
   google.accounts.id.prompt();
 });
 
