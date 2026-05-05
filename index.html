@@ -545,7 +545,7 @@ async function handleCredentialResponse(response) {
     if (!getUserSettings()) saveUserSettings({ currency: '$', weekStart: 0, defaultBudget: 500 });
   }
 
-  loadFromSheet();
+  if (gCredential) loadFromSheet();
 }
 
 function signOut() {
@@ -715,7 +715,10 @@ function api(params) {
   const qs = Object.entries({ ...params, token: gCredential })
     .map(([k,v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
   return fetch(`${SCRIPT_URL}?${qs}`).then(r => r.json()).then(data => {
-    if (data.error && data.error.includes('authenticated')) { signOut(); throw new Error(data.error); }
+    if (data.error) {
+      if (data.error.includes('authenticated')) signOut();
+      throw new Error(data.error);
+    }
     return data;
   });
 }
@@ -724,7 +727,7 @@ function loadFromSheet() {
   document.getElementById('txArea').innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>';
   updateSplitToggle(); renderHeader(); renderWeeks();
   api({ action: 'list' })
-    .then(data => { if (Array.isArray(data)) exps = data.map(e => ({ ...e, amount: Number(e.amount) })); render(); })
+    .then(data => { exps = data.map(e => ({ ...e, amount: Number(e.amount) })); render(); })
     .catch(() => { document.getElementById('txArea').innerHTML = '<div class="empty"><div class="eicon">⚠️</div>Could not load data.</div>'; });
 }
 
