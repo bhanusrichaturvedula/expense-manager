@@ -728,14 +728,13 @@ function loadFromSheet() {
   updateSplitToggle(); renderHeader(); renderWeeks();
   api({ action: 'list' })
     .then(data => { exps = data.map(e => ({ ...e, amount: Number(e.amount) })); render(); })
-    .catch(() => { document.getElementById('txArea').innerHTML = '<div class="empty"><div class="eicon">⚠️</div>Could not load data.</div>'; });
+    .catch(() => { document.getElementById('txArea').innerHTML = '<div class="empty"><div class="eicon">⚠️</div>Could not load data.<br><button onclick="loadFromSheet()" style="margin-top:12px;padding:8px 18px;background:var(--b2);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Retry</button></div>'; });
 }
 
 async function apiAction(params) {
   showSaving(true);
-  try { await api(params); }
-  catch(e) { toast('Could not save. Check internet.'); }
-  finally { showSaving(false); }
+  try { await api(params); showSaving(false); return true; }
+  catch(e) { showSaving(false); toast('Could not save. Check connection.'); return false; }
 }
 
 // ── Date helpers ──
@@ -954,14 +953,14 @@ async function saveExp() {
     const i = exps.findIndex(e=>e.id===currentEditId);
     if (i !== -1) exps[i] = { ...exps[i], desc, amount: amt, date, category, notes, card };
     render();
-    await apiAction({ action:'update', id:currentEditId, desc, amount:amt, date, category, notes, card });
-    toast('Expense updated');
+    const ok1 = await apiAction({ action:'update', id:currentEditId, desc, amount:amt, date, category, notes, card });
+    if (ok1) toast('Expense updated');
   } else {
     const id = Date.now().toString();
     exps.push({ id, desc, amount: amt, date, category, notes, card });
     render();
-    await apiAction({ action:'add', id, desc, amount:amt, date, category, notes, card });
-    toast('Expense saved');
+    const ok2 = await apiAction({ action:'add', id, desc, amount:amt, date, category, notes, card });
+    if (ok2) toast('Expense saved');
   }
 }
 
