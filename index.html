@@ -207,6 +207,30 @@
     .saving-box .spinner { margin-bottom: 10px; }
     .saving-label { font-size: 13px; font-weight: 600; color: var(--b1); }
 
+    /* ── Home Expenses Page ── */
+    #homeApp { min-height: 100vh; background: var(--bg); }
+    .he-hdr { background: linear-gradient(155deg, #064e3b 0%, #065f46 40%, #059669 75%, #10b981 100%); padding: 22px 16px 18px; color: white; }
+    .he-hdr-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .he-back-btn { background: rgba(255,255,255,0.22); color: white; border: none; border-radius: 100px; padding: 5px 13px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .he-hdr-title { font-size: 17px; font-weight: 800; }
+    .he-month-row { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 14px; }
+    .he-nav-btn { background: rgba(255,255,255,0.22); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+    .he-month-lbl { font-size: 15px; font-weight: 800; min-width: 130px; text-align: center; }
+    .he-stats-row { display: flex; align-items: center; background: rgba(255,255,255,0.15); border-radius: 12px; padding: 10px 0; }
+    .he-stat-item { flex: 1; text-align: center; }
+    .he-stat-lbl { font-size: 10px; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.7px; }
+    .he-stat-val { font-size: 20px; font-weight: 800; margin-top: 3px; }
+    .he-stat-div { width: 1px; background: rgba(255,255,255,0.3); height: 32px; }
+    .he-body { padding: 14px 12px 90px; }
+    .he-exp { background: white; border-radius: 12px; padding: 12px 14px; border: 1px solid var(--border); margin-bottom: 9px; }
+    .he-exp-top { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .he-exp-desc { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .he-exp-bottom { display: flex; align-items: center; justify-content: space-between; }
+    .he-exp-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .he-exp-date { font-size: 11px; color: #94a3b8; }
+    .he-exp-amt { font-size: 15px; font-weight: 800; color: var(--text); flex-shrink: 0; }
+    .home-exp-btn { background: rgba(16,185,129,0.35); color: white; border: none; border-radius: 100px; padding: 4px 10px; font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+
     /* ── Online Orders Page ── */
     #onlineApp { min-height: 100vh; background: var(--bg); }
     .ol-hdr { background: linear-gradient(155deg, #6d28d9 0%, #7c3aed 40%, #8b5cf6 75%, #a78bfa 100%); padding: 22px 16px 18px; color: white; }
@@ -279,7 +303,10 @@
     <div class="hdr-top">
       <div>
         <div class="hdr-title">Expense Manager</div>
-        <button class="ol-orders-btn" onclick="openOnlineOrders()" style="margin-top:6px">📦 Online Orders</button>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <button class="ol-orders-btn" onclick="openOnlineOrders()">📦 Online Orders</button>
+          <button class="home-exp-btn" onclick="openHomeExpenses()">🏠 Home Expenses</button>
+        </div>
       </div>
       <div class="hdr-right">
         <div class="hdr-month" id="hMonth"></div>
@@ -391,6 +418,36 @@
     </div>
     <div class="stitle">Transactions</div>
     <div id="txArea"><div class="loading"><div class="spinner"></div>Loading...</div></div>
+  </div>
+</div>
+
+<!-- ── Home Expenses Page ── -->
+<div id="homeApp" style="display:none">
+  <div class="he-hdr">
+    <div class="he-hdr-top">
+      <button class="he-back-btn" onclick="closeHomeExpenses()">‹ Back</button>
+      <div class="he-hdr-title">🏠 Home Expenses</div>
+      <div style="width:64px"></div>
+    </div>
+    <div class="he-month-row">
+      <button class="he-nav-btn" onclick="changeHomeMonth(-1)">‹</button>
+      <span class="he-month-lbl" id="heMonth"></span>
+      <button class="he-nav-btn" onclick="changeHomeMonth(1)">›</button>
+    </div>
+    <div class="he-stats-row">
+      <div class="he-stat-item">
+        <div class="he-stat-lbl">Transactions</div>
+        <div class="he-stat-val" id="heCount">0</div>
+      </div>
+      <div class="he-stat-div"></div>
+      <div class="he-stat-item">
+        <div class="he-stat-lbl">Total</div>
+        <div class="he-stat-val" id="heTotal">$0.00</div>
+      </div>
+    </div>
+  </div>
+  <div class="he-body" id="heArea">
+    <div class="loading"><div class="spinner"></div>Loading...</div>
   </div>
 </div>
 
@@ -1117,6 +1174,86 @@ function showSaving(on) {
   } else if (!on && ex) { ex.remove(); }
 }
 
+// ── Home Expenses ──
+let homeExps = [];
+let homeViewYear = _now.getFullYear(), homeViewMonth = _now.getMonth();
+
+function openHomeExpenses() {
+  document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('homeApp').style.display = 'block';
+  homeViewYear = _now.getFullYear(); homeViewMonth = _now.getMonth();
+  loadHomeExpenses();
+}
+
+function closeHomeExpenses() {
+  document.getElementById('homeApp').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+}
+
+function changeHomeMonth(dir) {
+  let y = homeViewYear, m = homeViewMonth + dir;
+  if (m < 0)  { y--; m = 11; }
+  if (m > 11) { y++; m = 0;  }
+  if (y < MIN_YEAR || (y === MIN_YEAR && m < MIN_MONTH)) return;
+  if (y > MAX_YEAR || (y === MAX_YEAR && m > MAX_MONTH)) return;
+  homeViewYear = y; homeViewMonth = m;
+  renderHomeExpenses();
+}
+
+function loadHomeExpenses() {
+  document.getElementById('heArea').innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>';
+  renderHomeHeader([]);
+  api({ action: 'listHome' })
+    .then(data => {
+      homeExps = data.map(e => ({ ...e, amount: Number(e.amount) }));
+      renderHomeExpenses();
+    })
+    .catch(err => {
+      document.getElementById('heArea').innerHTML =
+        `<div class="empty"><div class="eicon">⚠️</div>Could not load expenses.<br><button onclick="loadHomeExpenses()" style="margin-top:12px;padding:8px 18px;background:#059669;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Retry</button></div>`;
+    });
+}
+
+function renderHomeHeader(monthData) {
+  const c = curr();
+  document.getElementById('heMonth').textContent = new Date(homeViewYear, homeViewMonth, 1)
+    .toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  document.getElementById('heCount').textContent = monthData.length;
+  document.getElementById('heTotal').textContent = `${c}${monthData.reduce((s,e)=>s+e.amount,0).toFixed(2)}`;
+}
+
+function renderHomeExpenses() {
+  const c = curr();
+  const prefix = `${homeViewYear}-${pad(homeViewMonth + 1)}`;
+  const monthData = homeExps
+    .filter(e => e.date && e.date.startsWith(prefix))
+    .sort((a, b) => b.date.localeCompare(a.date));
+  renderHomeHeader(monthData);
+  const area = document.getElementById('heArea');
+  if (!monthData.length) {
+    area.innerHTML = '<div class="empty"><div class="eicon">🏠</div>No home expenses this month</div>';
+    return;
+  }
+  area.innerHTML = monthData.map(e => {
+    const cat = getCat(e.category);
+    const cc  = e.card ? (CARD_COLORS[e.card] || CARD_COLORS['Other']) : null;
+    const cardBadge = cc ? `<span class="cat-badge" style="background:${cc.bg};color:${cc.color}">💳 ${e.card}</span>` : '';
+    return `<div class="he-exp">
+      <div class="he-exp-top">
+        <span class="cat-badge" style="background:${cat.bg};color:${cat.color}">${e.category}</span>
+        <span class="he-exp-desc">${e.desc}</span>
+      </div>
+      <div class="he-exp-bottom">
+        <div class="he-exp-meta">
+          ${cardBadge}
+          <span class="he-exp-date">${fmtDate(e.date)}</span>
+        </div>
+        <span class="he-exp-amt">${c}${Number(e.amount).toFixed(2)}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 // ── Online Orders ──
 let onlineOrders = [];
 let onlineViewYear = _now.getFullYear(), onlineViewMonth = _now.getMonth();
@@ -1182,6 +1319,8 @@ function renderOnlineOrders() {
     const sc = STORE_COLORS[o.store] || { color: '#475569', bg: '#f1f5f9' };
     const cc = o.card ? (CARD_COLORS[o.card] || CARD_COLORS['Other']) : null;
     const cardBadge = cc ? `<span class="cat-badge" style="background:${cc.bg};color:${cc.color}">💳 ${o.card}</span>` : '';
+    const orderNumMatch = (o.notes || '').match(/Order #([A-Z0-9]{3}-\d{7}-\d{7})/i);
+    const orderNum = orderNumMatch ? orderNumMatch[1].toUpperCase() : '';
     return `<div class="ol-order">
       <div class="ol-order-top">
         <span class="ol-store-badge" style="background:${sc.bg};color:${sc.color}">${o.store || 'Online'}</span>
@@ -1194,7 +1333,7 @@ function renderOnlineOrders() {
         </div>
         <span class="ol-order-amt">${c}${o.amount.toFixed(2)}</span>
       </div>
-      ${o.notes ? `<div class="txnotes" style="margin-top:5px">${o.notes}</div>` : ''}
+      ${orderNum ? `<div class="txnotes" style="margin-top:5px">Order #${orderNum}</div>` : ''}
     </div>`;
   }).join('');
 }
