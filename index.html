@@ -77,10 +77,10 @@
     .hdr-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
     .hdr-title { font-size: 18px; font-weight: 800; }
     .hdr-right { text-align: right; }
-    .hdr-month { font-size: 12px; font-weight: 600; opacity: 0.95; }
-    .hdr-user { display: flex; align-items: center; gap: 6px; justify-content: flex-end; margin-top: 4px; }
-    .hdr-uname { font-size: 10px; opacity: 0.85; }
-    .hdr-btn { font-size: 9px; background: rgba(255,255,255,0.22); color: white; border: none; border-radius: 100px; padding: 3px 9px; cursor: pointer; }
+    .hdr-month { font-size: 13px; font-weight: 700; opacity: 1; }
+    .hdr-user { display: flex; align-items: center; gap: 7px; justify-content: flex-end; margin-top: 6px; }
+    .hdr-uname { font-size: 13px; font-weight: 600; opacity: 1; }
+    .hdr-btn { font-size: 12px; background: rgba(255,255,255,0.25); color: white; border: none; border-radius: 100px; padding: 6px 13px; cursor: pointer; font-weight: 600; }
     .brow { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr; align-items: center; margin-bottom: 14px; }
     .bitem { text-align: center; }
     .blabel { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.7px; }
@@ -1040,7 +1040,7 @@ function renderTxs() {
   const area   = document.getElementById('txArea');
   const search = (document.getElementById('searchInput').value || '').toLowerCase().trim();
   let cur = monthExps().sort((a,b) => b.date.localeCompare(a.date));
-  if (search) cur = cur.filter(e => e.desc.toLowerCase().includes(search) || (e.notes||'').toLowerCase().includes(search));
+  if (search) cur = cur.filter(e => e.desc.toLowerCase().includes(search) || (e.notes||'').toLowerCase().includes(search) || (e.category||'').toLowerCase().includes(search));
   if (!cur.length) {
     area.innerHTML = search
       ? '<div class="empty"><div class="eicon">🔍</div>No results found</div>'
