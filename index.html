@@ -497,8 +497,14 @@
       </div>
     </div>
   </div>
-  <div class="he-body" id="heArea">
-    <div class="loading"><div class="spinner"></div>Loading...</div>
+  <div class="he-body">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input id="heSearch" class="search-fi" type="text" placeholder="Search by category, description, amount..." oninput="renderHomeExpenses()">
+    </div>
+    <div id="heArea">
+      <div class="loading"><div class="spinner"></div>Loading...</div>
+    </div>
   </div>
 </div>
 
@@ -527,8 +533,14 @@
       </div>
     </div>
   </div>
-  <div class="ol-body" id="olArea">
-    <div class="loading"><div class="spinner"></div>Loading...</div>
+  <div class="ol-body">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input id="olSearch" class="search-fi" type="text" placeholder="Search by name, order ID, amount..." oninput="renderOnlineOrders()">
+    </div>
+    <div id="olArea">
+      <div class="loading"><div class="spinner"></div>Loading...</div>
+    </div>
   </div>
 </div>
 
@@ -1259,6 +1271,7 @@ function openHomeExpenses() {
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('homeApp').style.display = 'block';
   homeViewYear = _now.getFullYear(); homeViewMonth = _now.getMonth();
+  const s = document.getElementById('heSearch'); if (s) s.value = '';
   loadHomeExpenses();
 }
 
@@ -1301,10 +1314,18 @@ function renderHomeHeader(monthData) {
 
 function renderHomeExpenses() {
   const c = curr();
+  const search = (document.getElementById('heSearch')?.value || '').toLowerCase().trim();
   const prefix = `${homeViewYear}-${pad(homeViewMonth + 1)}`;
-  const monthData = homeExps
+  let monthData = homeExps
     .filter(e => e.date && e.date.startsWith(prefix))
     .sort((a, b) => b.date.localeCompare(a.date));
+  if (search) {
+    monthData = monthData.filter(e =>
+      (e.category || '').toLowerCase().includes(search) ||
+      e.desc.toLowerCase().includes(search) ||
+      String(e.amount).includes(search)
+    );
+  }
   renderHomeHeader(monthData);
   const area = document.getElementById('heArea');
   if (!monthData.length) {
@@ -1339,6 +1360,7 @@ function openOnlineOrders() {
   document.getElementById('mainApp').style.display = 'none';
   document.getElementById('onlineApp').style.display = 'block';
   onlineViewYear = _now.getFullYear(); onlineViewMonth = _now.getMonth();
+  const s = document.getElementById('olSearch'); if (s) s.value = '';
   loadOnlineOrders();
 }
 
@@ -1382,10 +1404,20 @@ function renderOnlineHeader(monthOrders) {
 
 function renderOnlineOrders() {
   const c = curr();
+  const search = (document.getElementById('olSearch')?.value || '').toLowerCase().trim();
   const prefix = `${onlineViewYear}-${pad(onlineViewMonth + 1)}`;
-  const monthOrders = onlineOrders
+  let monthOrders = onlineOrders
     .filter(o => o.date && o.date.startsWith(prefix))
     .sort((a, b) => b.date.localeCompare(a.date));
+  if (search) {
+    monthOrders = monthOrders.filter(o => {
+      const orderNumMatch = (o.notes || '').match(/Order #([A-Z0-9]{3}-\d{7}-\d{7})/i);
+      const orderNum = orderNumMatch ? orderNumMatch[1].toLowerCase() : '';
+      return o.desc.toLowerCase().includes(search) ||
+             orderNum.includes(search) ||
+             String(o.amount).includes(search);
+    });
+  }
   renderOnlineHeader(monthOrders);
   const area = document.getElementById('olArea');
   if (!monthOrders.length) {
