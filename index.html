@@ -33,6 +33,12 @@
     .keep-login-cb { width: 16px; height: 16px; accent-color: #0284c7; cursor: pointer; }
     .keep-login-lbl { font-size: 12px; color: #64748b; cursor: pointer; user-select: none; }
 
+    /* ── Splash Screen ── */
+    #splashScreen { position: fixed; inset: 0; background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+    .splash-icon { font-size: 60px; margin-bottom: 16px; }
+    .splash-title { font-size: 24px; font-weight: 800; color: white; margin-bottom: 8px; }
+    .splash-spinner { width: 32px; height: 32px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; margin-top: 32px; }
+
     /* ── Settings Panel (bottom sheet) ── */
     .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: flex-end; justify-content: center; z-index: 200; }
     .settings-card { background: white; border-radius: 20px 20px 0 0; padding: 24px 20px 44px; width: 100%; max-width: 430px; max-height: 88vh; overflow-y: auto; }
@@ -234,6 +240,18 @@
     .he-exp-amt { font-size: 15px; font-weight: 800; color: var(--text); flex-shrink: 0; }
     .home-exp-btn { background: rgba(16,185,129,0.35); color: white; border: none; border-radius: 100px; padding: 4px 10px; font-size: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; }
 
+    /* ── Nav Cards ── */
+    .nav-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 12px 4px; }
+    .nav-card { border-radius: 16px; padding: 14px 13px; display: flex; align-items: center; gap: 10px; cursor: pointer; border: none; width: 100%; text-align: left; box-shadow: 0 4px 14px rgba(0,0,0,0.12); transition: transform 0.15s, box-shadow 0.15s; }
+    .nav-card:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .nav-card-online { background: linear-gradient(135deg, #5b21b6, #7c3aed, #a78bfa); }
+    .nav-card-home   { background: linear-gradient(135deg, #064e3b, #059669, #34d399); }
+    .nav-card-icon   { font-size: 24px; flex-shrink: 0; }
+    .nav-card-info   { flex: 1; min-width: 0; }
+    .nav-card-label  { font-size: 13px; font-weight: 800; color: white; }
+    .nav-card-sub    { font-size: 10px; color: rgba(255,255,255,0.72); margin-top: 2px; }
+    .nav-card-arr    { font-size: 20px; color: rgba(255,255,255,0.55); flex-shrink: 0; }
+
     /* ── Online Orders Page ── */
     #onlineApp { min-height: 100vh; background: var(--bg); }
     .ol-hdr { background: linear-gradient(155deg, #6d28d9 0%, #7c3aed 40%, #8b5cf6 75%, #a78bfa 100%); padding: 22px 16px 18px; color: white; }
@@ -262,8 +280,15 @@
 </head>
 <body>
 
+<!-- ── Splash ── -->
+<div id="splashScreen">
+  <div class="splash-icon">💰</div>
+  <div class="splash-title">Expense Manager</div>
+  <div class="splash-spinner"></div>
+</div>
+
 <!-- ── Login ── -->
-<div id="loginScreen">
+<div id="loginScreen" style="display:none">
   <div class="login-card">
     <div class="login-icon">💰</div>
     <div class="login-title">Expense Manager</div>
@@ -310,10 +335,6 @@
     <div class="hdr-top">
       <div>
         <div class="hdr-title">Expense Manager</div>
-        <div style="display:flex;gap:6px;margin-top:6px">
-          <button class="ol-orders-btn" onclick="openOnlineOrders()">📦 Online Orders</button>
-          <button class="home-exp-btn" onclick="openHomeExpenses()">🏠 Home Expenses</button>
-        </div>
       </div>
       <div class="hdr-right">
         <div class="hdr-month" id="hMonth"></div>
@@ -361,6 +382,25 @@
     <input id="iBudget" class="budget-input" type="number" placeholder="Enter monthly budget" min="1" inputmode="decimal">
     <button class="budget-cancel" onclick="closeBudgetForm()">✕</button>
     <button class="budget-save" onclick="saveBudget()">Set</button>
+  </div>
+
+  <div class="nav-cards">
+    <button class="nav-card nav-card-online" onclick="openOnlineOrders()">
+      <span class="nav-card-icon">📦</span>
+      <div class="nav-card-info">
+        <div class="nav-card-label">Online Orders</div>
+        <div class="nav-card-sub">Amazon & more</div>
+      </div>
+      <span class="nav-card-arr">›</span>
+    </button>
+    <button class="nav-card nav-card-home" onclick="openHomeExpenses()">
+      <span class="nav-card-icon">🏠</span>
+      <div class="nav-card-info">
+        <div class="nav-card-label">Home Expenses</div>
+        <div class="nav-card-sub">Bank of America</div>
+      </div>
+      <span class="nav-card-arr">›</span>
+    </button>
   </div>
 
   <div class="weeks">
@@ -653,7 +693,9 @@ async function handleCredentialResponse(response) {
   gUserEmail  = email;
   gUserName   = payload.given_name || payload.name.split(' ')[0];
   scheduleTokenRefresh(payload.exp);
+  localStorage.setItem('em_last_email', email);
 
+  document.getElementById('splashScreen').style.display = 'none';
   document.getElementById('loginScreen').style.display = 'none';
   document.getElementById('loginError').style.display  = 'none';
   document.getElementById('userName').textContent = gUserName;
@@ -835,23 +877,34 @@ document.addEventListener('touchend', e => {
 }, { passive: true });
 
 // ── Boot ──
+function showLoginScreen() {
+  document.getElementById('splashScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   const keepLoggedIn = localStorage.getItem('em_keep_logged_in') === 'true';
+  const storedEmail  = localStorage.getItem('em_last_email') || '';
   const cb = document.getElementById('keepLoggedIn');
   cb.checked = keepLoggedIn;
   cb.addEventListener('change', () => localStorage.setItem('em_keep_logged_in', cb.checked ? 'true' : 'false'));
 
-  google.accounts.id.initialize({ client_id: CLIENT_ID, callback: handleCredentialResponse, auto_select: keepLoggedIn });
+  google.accounts.id.initialize({
+    client_id:   CLIENT_ID,
+    callback:    handleCredentialResponse,
+    auto_select: keepLoggedIn,
+    hint:        keepLoggedIn && storedEmail ? storedEmail : undefined
+  });
   google.accounts.id.renderButton(document.getElementById('gSignInBtn'), { theme: 'outline', size: 'large', width: 240, text: 'signin_with' });
-
-  if (keepLoggedIn) {
-    document.getElementById('loginSub').textContent = 'Signing you in...';
-    setTimeout(() => {
-      if (!gCredential) document.getElementById('loginSub').textContent = 'Family expense tracker.\nSign in with your Google account.';
-    }, 3000);
-  }
-
   google.accounts.id.prompt();
+
+  // If keep-me-logged-in is on, stay on splash and wait for auto sign-in.
+  // Fall back to login screen after 4 seconds if it doesn't happen.
+  if (keepLoggedIn && storedEmail) {
+    setTimeout(() => { if (!gCredential) showLoginScreen(); }, 4000);
+  } else {
+    showLoginScreen();
+  }
 });
 
 // ── API ──
