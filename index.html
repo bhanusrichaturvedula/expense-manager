@@ -29,6 +29,9 @@
     .login-sub { font-size: 13px; color: #64748b; margin-bottom: 32px; line-height: 1.6; }
     .login-btn-wrap { display: flex; justify-content: center; }
     .login-error { font-size: 12px; color: #dc2626; background: #fee2e2; border-radius: 8px; padding: 10px 14px; margin-top: 16px; display: none; font-weight: 600; }
+    .keep-login-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; }
+    .keep-login-cb { width: 16px; height: 16px; accent-color: #0284c7; cursor: pointer; }
+    .keep-login-lbl { font-size: 12px; color: #64748b; cursor: pointer; user-select: none; }
 
     /* ── Settings Panel (bottom sheet) ── */
     .settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: flex-end; justify-content: center; z-index: 200; }
@@ -266,6 +269,10 @@
     <div class="login-title">Expense Manager</div>
     <div class="login-sub">Family expense tracker.<br>Sign in with your Google account.</div>
     <div class="login-btn-wrap"><div id="gSignInBtn"></div></div>
+    <div class="keep-login-row">
+      <input class="keep-login-cb" type="checkbox" id="keepLoggedIn">
+      <label class="keep-login-lbl" for="keepLoggedIn">Keep me logged in</label>
+    </div>
     <div class="login-error" id="loginError">Access denied. This app is private.</div>
   </div>
 </div>
@@ -829,8 +836,21 @@ document.addEventListener('touchend', e => {
 
 // ── Boot ──
 window.addEventListener('DOMContentLoaded', () => {
-  google.accounts.id.initialize({ client_id: CLIENT_ID, callback: handleCredentialResponse, auto_select: true });
+  const keepLoggedIn = localStorage.getItem('em_keep_logged_in') === 'true';
+  const cb = document.getElementById('keepLoggedIn');
+  cb.checked = keepLoggedIn;
+  cb.addEventListener('change', () => localStorage.setItem('em_keep_logged_in', cb.checked ? 'true' : 'false'));
+
+  google.accounts.id.initialize({ client_id: CLIENT_ID, callback: handleCredentialResponse, auto_select: keepLoggedIn });
   google.accounts.id.renderButton(document.getElementById('gSignInBtn'), { theme: 'outline', size: 'large', width: 240, text: 'signin_with' });
+
+  if (keepLoggedIn) {
+    document.getElementById('loginSub').textContent = 'Signing you in...';
+    setTimeout(() => {
+      if (!gCredential) document.getElementById('loginSub').textContent = 'Family expense tracker.\nSign in with your Google account.';
+    }, 3000);
+  }
+
   google.accounts.id.prompt();
 });
 
