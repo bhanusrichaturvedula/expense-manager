@@ -218,7 +218,7 @@
 
     /* ── Home Expenses Page ── */
     #homeApp { min-height: 100vh; background: var(--bg); }
-    .he-hdr { background: linear-gradient(155deg, #064e3b 0%, #065f46 40%, #059669 75%, #10b981 100%); padding: 22px 16px 18px; color: white; }
+    .he-hdr { background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%); padding: 22px 16px 18px; color: white; }
     .he-hdr-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
     .he-back-btn { background: rgba(255,255,255,0.22); color: white; border: none; border-radius: 100px; padding: 5px 13px; font-size: 14px; font-weight: 700; cursor: pointer; }
     .he-hdr-title { font-size: 17px; font-weight: 800; }
@@ -244,8 +244,8 @@
     .nav-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 12px 4px; }
     .nav-card { border-radius: 16px; padding: 14px 13px; display: flex; align-items: center; gap: 10px; cursor: pointer; border: none; width: 100%; text-align: left; box-shadow: 0 4px 14px rgba(0,0,0,0.12); transition: transform 0.15s, box-shadow 0.15s; }
     .nav-card:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .nav-card-online { background: linear-gradient(135deg, #5b21b6, #7c3aed, #a78bfa); }
-    .nav-card-home   { background: linear-gradient(135deg, #064e3b, #059669, #34d399); }
+    .nav-card-online { background: linear-gradient(135deg, #0369a1, #0284c7, #38bdf8); }
+    .nav-card-home   { background: linear-gradient(135deg, #0284c7, #0ea5e9, #7dd3fc); }
     .nav-card-icon   { font-size: 24px; flex-shrink: 0; }
     .nav-card-info   { flex: 1; min-width: 0; }
     .nav-card-label  { font-size: 13px; font-weight: 800; color: white; }
@@ -254,7 +254,7 @@
 
     /* ── Online Orders Page ── */
     #onlineApp { min-height: 100vh; background: var(--bg); }
-    .ol-hdr { background: linear-gradient(155deg, #6d28d9 0%, #7c3aed 40%, #8b5cf6 75%, #a78bfa 100%); padding: 22px 16px 18px; color: white; }
+    .ol-hdr { background: linear-gradient(155deg, #0369a1 0%, #0284c7 40%, #0ea5e9 75%, #38bdf8 100%); padding: 22px 16px 18px; color: white; }
     .ol-hdr-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
     .ol-back-btn { background: rgba(255,255,255,0.22); color: white; border: none; border-radius: 100px; padding: 5px 13px; font-size: 14px; font-weight: 700; cursor: pointer; }
     .ol-hdr-title { font-size: 17px; font-weight: 800; }
@@ -337,7 +337,11 @@
         <div class="hdr-title">Expense Manager</div>
       </div>
       <div class="hdr-right">
-        <div class="hdr-month" id="hMonth"></div>
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px">
+          <button class="hdr-btn" onclick="changeMonth(-1)" style="padding:4px 10px;font-size:16px">‹</button>
+          <div class="hdr-month" id="hMonth"></div>
+          <button class="hdr-btn" onclick="changeMonth(1)" style="padding:4px 10px;font-size:16px">›</button>
+        </div>
         <div class="hdr-user">
           <span class="hdr-uname" id="userName"></span>
           <button class="hdr-btn" onclick="openSettings()">⚙️</button>
@@ -514,7 +518,7 @@
     <div class="ol-stats-row">
       <div class="ol-stat-item">
         <div class="ol-stat-lbl">Orders</div>
-        <div class="ol-stat-val" id="olCount">0</div> 
+        <div class="ol-stat-val" id="olCount">0</div>
       </div>
       <div class="ol-stat-div"></div>
       <div class="ol-stat-item">
@@ -1283,7 +1287,7 @@ function loadHomeExpenses() {
     })
     .catch(err => {
       document.getElementById('heArea').innerHTML =
-        `<div class="empty"><div class="eicon">⚠️</div>Could not load expenses.<br><button onclick="loadHomeExpenses()" style="margin-top:12px;padding:8px 18px;background:#059669;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Retry</button></div>`;
+        `<div class="empty"><div class="eicon">⚠️</div>Could not load expenses.<br><button onclick="loadHomeExpenses()" style="margin-top:12px;padding:8px 18px;background:#0284c7;color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Retry</button></div>`;
     });
 }
 
